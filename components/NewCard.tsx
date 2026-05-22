@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 interface NewsCardProps {
   title?: string;
@@ -8,20 +9,28 @@ interface NewsCardProps {
   category?: string;
   description?: string;
   slug?: string;
+  locale: string; 
 }
 
-export default function NewsCard({ title, image, date, category, description, slug }: NewsCardProps) {
-  // Kateqoriya rəngini təyin edərkən boşluqları silirik və hərfləri yoxlayırıq
+export default function NewsCard({
+  title,
+  image,
+  date,
+  category,
+  description,
+  slug,
+}: NewsCardProps) {
+  // useParams-dan locale-i alırıq
+  const params = useParams();
+  const locale = params.locale || "az"; // Əgər locale yoxdursa, default "az"
+
   const trimmedCategory = category?.trim() || "";
-  
-  // "Rəsmi" və ya "Resmi" ehtimallarını yoxlayırıq
   const isOfficial = trimmedCategory === "Rəsmi" || trimmedCategory === "Resmi";
   const categoryBgColor = isOfficial ? "bg-blue-600" : "bg-green-600";
 
   return (
-    <Link href={`/xeberler/${slug}`}>
+    <Link href={`/${locale}/xeberler/${slug}`}>
       <div className="group flex flex-col bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-500 h-full">
-        
         {/* 1. Şəkil Bölümü */}
         <div className="relative h-60 w-full overflow-hidden bg-gray-100">
           {image ? (
@@ -36,9 +45,10 @@ export default function NewsCard({ title, image, date, category, description, sl
             </div>
           )}
 
-          {/* Kateqoriya Etiketi */}
           {category && (
-            <div className={`absolute top-4 left-4 ${categoryBgColor} text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-sm shadow-lg z-10`}>
+            <div
+              className={`absolute top-4 left-4 ${categoryBgColor} text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-sm shadow-lg z-10`}
+            >
               {trimmedCategory}
             </div>
           )}
@@ -46,8 +56,6 @@ export default function NewsCard({ title, image, date, category, description, sl
 
         {/* 2. Mətn və Məlumat Bölümü */}
         <div className="p-6 flex flex-col flex-grow space-y-3">
-
-          {/* Tarix */}
           {date && (
             <div className="flex items-center text-gray-400 text-[11px] font-medium italic">
               <svg className="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,19 +65,16 @@ export default function NewsCard({ title, image, date, category, description, sl
             </div>
           )}
 
-          {/* Başlıq */}
           <h3 className="text-xl font-bold text-[#1a3352] leading-[1.3] group-hover:text-blue-700 transition-colors line-clamp-2 min-h-[52px]">
             {title || "Başlıq tapılmadı"}
           </h3>
 
-          {/* Qısa Məzmun */}
           {description && (
             <p className="text-gray-500 text-sm leading-relaxed line-clamp-3">
               {description}
             </p>
           )}
 
-          {/* Alt Hissə: Ətraflı Oxu */}
           <div className="pt-4 mt-auto border-t border-gray-50 flex justify-between items-center">
             <span className="text-[#1a3352] text-xs font-extrabold uppercase tracking-tighter group-hover:tracking-normal transition-all flex items-center">
               Ətraflı Oxu

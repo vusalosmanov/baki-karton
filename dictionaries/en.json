@@ -80,5 +80,38 @@
     "target": "Our goal is to develop your business and build a more sustainable future together.",
     "teamQuote": "\"We package the future together.\"",
     "teamSign": "- Baku Cardboard Team"
+  },
+  "servicesPage": {
+    "heroLabel": "Professional Services",
+    "heroTitle": "BAKI KARTON\nSERVICES",
+    "heroSubtitle": "We offer innovative and durable solutions at every stage of the packaging process, from concept to production.",
+    "specializedTitle": "Specialized Solutions",
+    "applyBtn": "Apply for an order",
+    "services": {
+      "design": {
+        "title": "Design Provision",
+        "shortDesc": "Baku Karton offers custom design services that will distinguish your product from its competitors.",
+        "fullDesc": "We know that packaging is the first impression of a product and directly influences the customer's decision. Our professional design team creates unique and attractive box designs tailored to your product's features, target audience, and brand identity.",
+        "listTitle": "Our design service includes:",
+        "items": [
+          "Brand alignment: Harmonic designs with your corporate colors, logo, and slogan.",
+          "Functionality: Structural design that protects your product and facilitates its use.",
+          "Effective communication: Presenting important information about the product in a clear and aesthetic way."
+        ],
+        "footerText": "Let your packaging speak! Take advantage of Baku Karton's design services to make your product more attractive and memorable."
+      },
+      "die": {
+        "title": "Die Ordering",
+        "shortDesc": "Preparation of precise dies for complex-shaped or custom-sized packaging.",
+        "fullDesc": "Baku Karton not only produces high-quality cardboard boxes but also offers custom die-making services perfectly tailored to your product's dimensions and shape. We know that the foundation of perfect packaging starts with a precise and high-quality die.",
+        "listTitle": "Our Die Preparation service includes:",
+        "items": [
+          "Custom Sizes: Preparation of custom dies tailored to your product's specific dimensions.",
+          "Complex Shapes: Creation of complex shapes for non-standard and custom-designed boxes.",
+          "High Precision: Ensuring accuracy to avoid any errors in the production process."
+        ],
+        "footerText": "If you want every detail of your packaging to be perfect, take advantage of Baku Karton's professional die-making services. You can speed up your production process with this service."
+      }
+    }
   }
 }

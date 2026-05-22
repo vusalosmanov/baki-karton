@@ -153,12 +153,3 @@ export default async function AboutPage({ params }: AboutPageProps) {
   );
 }
 
-//  {fabricVizual ? (
-//                                 <img
-//                                     src={fabricVizual}
-//                                     alt="Bakı Karton Fabriki"
-//                                     className="w-full h-full object-cover cursor-pointer"
-//                                 />
-//                             ) : (
-//                                 <div className="w-full h-full bg-slate-900" />
-//                             )}

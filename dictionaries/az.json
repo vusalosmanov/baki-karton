@@ -80,5 +80,38 @@
     "target": "Bizim məqsədimiz – biznesinizi inkişaf etdirmək və birlikdə daha dayanıqlı bir gələcək qurmaqdır.",
     "teamQuote": "\"Gələcəyi birlikdə paketləyirik.\"",
     "teamSign": "- Bakı Karton Komandası"
+  },
+  "servicesPage": {
+    "heroLabel": "Peşəkar Xidmətlər",
+    "heroTitle": "BAKI KARTON\nXİDMƏTLƏR",
+    "heroSubtitle": "İdeyadan istehsala qədər qablaşdırma prosesinin hər mərhələsində innovativ və dözümlü həllər təklif edirik.",
+    "specializedTitle": "İxtisaslaşmış Həllər",
+    "applyBtn": "Sifariş üçün müraciət et",
+    "services": {
+      "design": {
+        "title": "Dizaynın Təmin Olunması",
+        "shortDesc": "Bakı Karton məhsulunuzu rəqiblərindən fərqləndirəcək xüsusi dizayn xidmətləri təklif edir.",
+        "fullDesc": "Biz bilirik ki, qablaşdırma məhsulun ilk təəssüratıdır və müştərinin qərarına birbaşa təsir edir. Peşəkar dizayn komandamız məhsulunuzun xüsusiyyətlərinə, hədəf kütləsinə və brendinizin kimliyinə uyğun olaraq unikal və cəlbedici qutu dizaynları hazırlayır.",
+        "listTitle": "Dizayn xidmətimizə daxildir:",
+        "items": [
+          "Brendinizə uyğunluq: Korporativ rəngləriniz, loqonuz və şüarınızla harmonik dizaynlar.",
+          "Funksionallıq: Məhsulunuzu qoruyan və istifadəni asanlaşdıran struktur dizaynı.",
+          "Effektiv kommunikasiya: Məhsul haqqında vacib məlumatları aydın və estetik şəkildə təqdim etmək."
+        ],
+        "footerText": "Qoyun qablaşdırmanız danışsın! Məhsulunuzu daha cəlbedici və yadda qalan etmək üçün Bakı Karton-un dizayn xidmətlərindən yararlanın."
+      },
+      "die": {
+        "title": "Qəlibin Sifariş Edilməsi",
+        "shortDesc": "Mürəkkəb formalı və ya xüsusi ölçülü qablaşdırmalar üçün dəqiq qəliblərin hazırlanması.",
+        "fullDesc": "Bakı Karton yalnız yüksək keyfiyyətli karton qutular istehsal etmir, həm də məhsulunuzun ölçülərinə və formasına tam uyğun qəliblərin hazırlanması xidmətini təklif edir. Biz bilirik ki, mükəmməl qablaşdırmanın əsası dəqiq və keyfiyyətli qəliblə başlayır.",
+        "listTitle": "Qəlib Hazırlığı Xidmətimizə daxildir:",
+        "items": [
+          "Fərdi Ölçülər: Məhsulunuzun spesifik ölçülərinə uyğun xüsusi qəliblərin hazırlanması.",
+          "Mürəkkəb Formalar: Standart olmayan və xüsusi dizaynlı qutular üçün mürəkkəb formaların yaradılması.",
+          "Yüksək Dəqiqlik: İstehsal prosesində heç bir səhvə yol verməmək üçün dəqiqliyin təmin edilməsi."
+        ],
+        "footerText": "Qablaşdırmanızın hər detalının mükəmməl olmasını istəyirsinizsə, Bakı Karton-un peşəkar qəlib hazırlığı xidmətlərindən yararlanın. Bu xidmət ilə siz istehsal prosesini sürətləndirə bilərsiniz."
+      }
+    }
   }
 }
