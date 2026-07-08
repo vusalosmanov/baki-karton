@@ -1,16 +1,20 @@
 import { getNews } from "@/lib/strapi";
 import NewsContent from "@/components/NewsContent";
+import { getDictionary } from "@/lib/get-dictionary";
 
 interface NewsPageProps {
   params: Promise<{ locale: string }>;
 }
 
 export default async function NewsPage({ params }: NewsPageProps) {
-  // 1. Locale-i parametrlərdən alırıq
+  // 1. Locale-i alırıq
   const { locale } = await params;
   
-  // 2. getNews funksiyasına bu locale-i ötürürük ki, 
-  // Strapi-dən məhz həmin dildə olan xəbərlər gəlsin
+  // 2. Dictionary-dən məlumatları çəkirik
+  const dict = await getDictionary(locale as "az" | "en") as Record<string, any>;
+  const t = dict?.news || {}; // Əgər dictionary-də newsPage bölməsi varsa
+  
+  // 3. Strapi-dən xəbərləri çəkirik
   const newsFromStrapi = await getNews(locale);
 
   return (
@@ -22,18 +26,17 @@ export default async function NewsPage({ params }: NewsPageProps) {
 
         <div className="max-w-7xl mx-auto relative z-10">
           <h1 className="text-4xl md:text-6xl font-black text-white leading-tight">
-            Media və <span className="text-blue-400">Yeniliklər</span>
+            {t.title || "Media və "} <span className="text-blue-400">{t.highlight || "Yeniliklər"}</span>
           </h1>
           <p className="mt-6 text-blue-100/70 max-w-2xl text-lg leading-relaxed">
-            Bakı Karton MMC-nin ən son nailiyyətləri, istehsalat yenilikləri və
-            sektorun gələcəyi ilə bağlı aktual xəbərlər.
+            {t.description || "Bakı Karton MMC-nin ən son nailiyyətləri, istehsalat yenilikləri və sektorun gələcəyi ilə bağlı aktual xəbərlər."}
           </p>
         </div>
       </div>
 
       {/* 2. Xəbər Kontenti */}
       <div className="max-w-7xl mx-auto px-6 -mt-10 relative z-20 pb-24">
-        <NewsContent initialNews={newsFromStrapi} locale={locale} />
+        <NewsContent initialNews={newsFromStrapi} locale={locale} dict={dict} />
       </div>
 
       {/* 3. Newsletter Section */}
@@ -41,20 +44,20 @@ export default async function NewsPage({ params }: NewsPageProps) {
         <div className="bg-[#1a3352] rounded-[2.5rem] p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between shadow-2xl">
           <div className="relative z-10 text-center md:text-left mb-8 md:mb-0">
             <h2 className="text-3xl font-bold text-white">
-              Yenilikləri qaçırmayın
+              {t.newsletterTitle || "Yenilikləri qaçırmayın"}
             </h2>
             <p className="text-blue-200 mt-2">
-              E-poçtunuzu qeyd edin, ən son xəbərlər sizə gəlsin.
+              {t.newsletterDesc || "E-poçtunuzu qeyd edin, ən son xəbərlər sizə gəlsin."}
             </p>
           </div>
           <div className="relative z-10 w-full md:w-auto flex flex-col sm:flex-row gap-4">
             <input
               type="email"
-              placeholder="E-mail ünvanınız"
+              placeholder={t.placeholder || "E-mail ünvanınız"}
               className="px-6 py-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white/20 transition-all w-full md:w-80 placeholder:text-blue-200/50"
             />
             <button className="bg-white text-[#1a3352] px-8 py-4 rounded-2xl font-bold hover:bg-blue-50 transition-colors shadow-lg active:scale-95">
-              Abunə ol
+              {t.subscribe || "Abunə ol"}
             </button>
           </div>
         </div>

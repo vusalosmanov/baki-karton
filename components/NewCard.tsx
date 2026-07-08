@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 
 interface NewsCardProps {
   title?: string;
@@ -9,7 +8,7 @@ interface NewsCardProps {
   category?: string;
   description?: string;
   slug?: string;
-  locale: string; 
+  locale: string;
 }
 
 export default function NewsCard({
@@ -19,18 +18,25 @@ export default function NewsCard({
   category,
   description,
   slug,
+  locale,
 }: NewsCardProps) {
-  // useParams-dan locale-i alırıq
-  const params = useParams();
-  const locale = params.locale || "az"; // Əgər locale yoxdursa, default "az"
+  
+  // Kateqoriya rəngləri üçün dinamik funksiya
+  const getCategoryColor = (cat: string) => {
+    const c = cat.toLowerCase().trim();
+    if (c === "rəsmi" || c === "resmi" || c === "official") return "bg-blue-600";
+    if (c === "istehsal" || c === "production") return "bg-emerald-600";
+    if (c === "blog") return "bg-purple-600";
+    return "bg-gray-600";
+  };
 
   const trimmedCategory = category?.trim() || "";
-  const isOfficial = trimmedCategory === "Rəsmi" || trimmedCategory === "Resmi";
-  const categoryBgColor = isOfficial ? "bg-blue-600" : "bg-green-600";
+  const categoryBgColor = getCategoryColor(trimmedCategory);
 
   return (
-    <Link href={`/${locale}/xeberler/${slug}`}>
+    <Link href={`/${locale}/xeberler/${slug}`} className="h-full block">
       <div className="group flex flex-col bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-500 h-full">
+        
         {/* 1. Şəkil Bölümü */}
         <div className="relative h-60 w-full overflow-hidden bg-gray-100">
           {image ? (
@@ -45,10 +51,8 @@ export default function NewsCard({
             </div>
           )}
 
-          {category && (
-            <div
-              className={`absolute top-4 left-4 ${categoryBgColor} text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-sm shadow-lg z-10`}
-            >
+          {trimmedCategory && (
+            <div className={`absolute top-4 left-4 ${categoryBgColor} text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-sm shadow-lg z-10`}>
               {trimmedCategory}
             </div>
           )}

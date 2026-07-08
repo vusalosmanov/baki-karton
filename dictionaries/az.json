@@ -113,5 +113,74 @@
         "footerText": "Qablaşdırmanızın hər detalının mükəmməl olmasını istəyirsinizsə, Bakı Karton-un peşəkar qəlib hazırlığı xidmətlərindən yararlanın. Bu xidmət ilə siz istehsal prosesini sürətləndirə bilərsiniz."
       }
     }
+  },
+  "news": {
+    "categories": ["Hamısı", "Rəsmi", "İstehsalat", "Bloq", "Yenilik"],
+    "title": "Media və ",
+    "highlight": "Yeniliklər",
+    "description": "Bakı Karton MMC-nin ən son nailiyyətləri, istehsalat yenilikləri və sektorun gələcəyi ilə bağlı aktual xəbərlər.",
+    "newsletterTitle": "Yenilikləri qaçırmayın",
+    "newsletterDesc": "E-poçtunuzu qeyd edin, ən son xəbərlər sizə gəlsin.",
+    "placeholder": "E-mail ünvanınız",
+    "subscribe": "Abunə ol"
+  },
+
+  "contactSection": {
+    "location": "Bizim Məkan",
+    "talkTitle": "Bizimlə Danışın",
+    "talkSubtitle": "Sifariş, məlumat və ya təklifləriniz üçün komandamız hər zaman xidmətinizdədir.",
+    "addressLabel": "Ünvan",
+    "addressValue": "Bakı, Azərbaycan",
+    "emailLabel": "E-mail",
+    "emailValue": "info@bakikarton.az",
+    "phoneLabel": "Telefon",
+    "formTitle": "Müraciət Formu",
+    "formSubtitle": "Bütün sahələri doldurmağınız xahiş olunur.",
+    "namePlaceholder": "Adınız və Soyadınız",
+    "emailPlaceholder": "E-mail ünvanınız",
+    "phonePlaceholder": "Əlaqə nömrəsi",
+    "selectSubject": "Mövzu seçin",
+    "option1": "Karton list sifarişi",
+    "option2": "Karton sifarişi",
+    "msgPlaceholder": "Mesajınız",
+    "sendButton": "GÖNDƏR"
+  },
+  "careerPage": {
+    "heroTitle": "Gələcəyinizi",
+    "heroHighlight": "Bizimlə Qablaşdırın.",
+    "careerOpportunity": "Karyera İmkanları",
+    "subTitle": "Bakı Karton-da biz sadəcə qutu istehsal etmirik, həm də peşəkar gələcəyinizi dayanıqlı təməllər üzərində qururuq.",
+    "hrTitle": "İnsan Resursları",
+    "recruitment": {
+      "title": "İşə Qəbul Siyasəti",
+      "shortDesc": "Şəffaf və ləyaqətli işə qəbul prosesi.",
+      "headDesc": "Bakı Karton, qloballaşan dünyada fərq yaratmaq üçün ən dəyərli investisiyanın insan resursları olduğunu anlayır. Bu məqsədlə, əməkdaşlarının motivasiyasına və məmnuniyyətinə böyük önəm verir.",
+      "mainDescPart1": "Minlərlə insana iş imkanı yaradan Bakı Karton, inkişafını və böyüməsini davam etdirərkən cəmiyyətə faydalı olmağın qürurunu yaşayır.",
+      "mainDescPart2": " olaraq, çalışdığı qurumun gələcəyi ilə öz həyatını birləşdirən və gördüyü işlərlə dəyər yaradan insanların formalaşdırdığı bir quruluşa inanırıq."
+    },
+    "education": {
+      "title": "Təhsil və İnkişaf",
+      "shortDesc": "Peşəkar bacarıqların artırılması və davamlı öyrənmə.",
+      "descPart1": "Bakı Karton, vizyonu və gələcək strategiyaları çərçivəsində, müxtəlif səviyyələrdə fəaliyyət göstərən əməkdaşların təlim və inkişaf fəaliyyətlərini eyni səviyyəyə çatdırmaq məqsədilə təlimlərini davam etdirir.",
+      "descPart2": "Bu məqsədlə qurulan",
+      "academyName": "Bakı Karton Akademiyası",
+      "descPart3": ", əməkdaşların fərdi tələbləri ilə yanaşı, şirkətin ehtiyaclarını da nəzərə alır.",
+      "descPart4": "Təlimlərimiz,",
+      "training1": "Oryentasiya Təlimləri",
+      "training2": "Fərdi İnkişaf Təlimləri",
+      "training3": "və",
+      "training4": "Texniki İnkişaf Təlimləri",
+      "descPart5": "olaraq kateqoriyalara ayrılır."
+    },
+    "form": {
+      "title": "Müraciət Formu",
+      "desc": "CV-nizi bizə göndərin.",
+      "nameLabel": "Ad və Soyad",
+      "emailLabel": "E-poçt",
+      "cvLabel": "CV (PDF)",
+      "sendBtn": "Göndər",
+      "sending": "Göndərilir...",
+      "success": "Müraciətiniz uğurla göndərildi!"
+    }
   }
 }

@@ -2,38 +2,46 @@
 import { useState } from "react";
 import NewsCard from "@/components/NewCard";
 
-// Artıq `locale` prop kimi gəlir, useParams-a ehtiyac yoxdur
 export default function NewsContent({
   initialNews,
   locale,
+  dict,
 }: {
   initialNews: any[];
   locale: string;
+  dict: Record<string, any>;
 }) {
-  const [selectedCategory, setSelectedCategory] = useState("Hamısı");
+  // JSON-dan kateqoriyaları alırıq
+  const categories = dict?.news?.categories || [
+    "All",
+    "Official",
+    "Production",
+    "Blog",
+    "News",
+  ];
 
-  const categories = ["Hamısı", "Rəsmi", "İstehsalat", "Bloq", "Yenilik"];
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
-  // Filtrləmə məntiqi
+
   const filteredNews = initialNews.filter((item: any) => {
-    if (selectedCategory === "Hamısı") return true;
-
-    const itemCategory = item.category?.trim().toLowerCase();
-    const selectedCat = selectedCategory.trim().toLocaleLowerCase("az-AZ");
-
-    if (selectedCat.includes("istehsalat"))
-      return itemCategory?.includes("istehsalat");
-    if (selectedCat.includes("rəsmi"))
-      return itemCategory?.includes("rəsmi") || itemCategory?.includes("resmi");
-
-    return itemCategory === selectedCat;
+    if (selectedCategory === categories[0]) return true;
+    const itemCat = item.category
+      ?.toLowerCase()
+      .trim()
+      .replace(/ə/g, "e")
+      .replace(/ı/g, "i");
+    const selectedCat = selectedCategory
+      .toLowerCase()
+      .trim()
+      .replace(/ə/g, "e")
+      .replace(/ı/g, "i");
+    return itemCat === selectedCat;
   });
 
   return (
     <>
-      {/* Kateqoriya Düymələri */}
       <div className="flex flex-wrap gap-3 mb-12 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-        {categories.map((cat) => (
+        {categories.map((cat: string) => (
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
@@ -47,12 +55,11 @@ export default function NewsContent({
           </button>
         ))}
       </div>
-
-      {/* Xəbərlər Grid */}
       {filteredNews.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-dashed border-gray-200">
           <p className="text-gray-400 font-medium">
-            Bu kateqoriyada hələlik heç bir xəbər yoxdur.
+            {dict?.news?.noNews ||
+              "Bu kateqoriyada hələlik heç bir xəbər yoxdur."}
           </p>
         </div>
       ) : (
@@ -70,15 +77,18 @@ export default function NewsContent({
                 image={imageUrl}
                 category={item.category?.trim()}
                 description={item.description}
-                date={new Date(item.createdAt).toLocaleDateString("az-AZ")}
+                date={new Date(item.createdAt).toLocaleDateString(
+                  locale === "az" ? "az-AZ" : "en-US",
+                )}
                 slug={item.slug}
-                // locale-i buraya ötürürsən (əgər NewsCard-da prop kimi qəbul edirsənsə)
                 locale={locale}
               />
             );
           })}
         </div>
       )}
+
+      {/* Pagination */}
       <div className="mt-16 flex justify-center space-x-2">
         <button className="w-12 h-12 rounded-xl border border-gray-200 flex items-center justify-center bg-white shadow-sm text-[#1a3352] font-bold">
           1

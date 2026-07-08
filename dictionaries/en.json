@@ -113,5 +113,73 @@
         "footerText": "If you want every detail of your packaging to be perfect, take advantage of Baku Karton's professional die-making services. You can speed up your production process with this service."
       }
     }
+  },
+  "news": {
+    "categories": ["All", "Official", "Production", "Blog", "News"],
+    "title": "Media and ",
+    "highlight": "News",
+    "description": "Discover the latest achievements, production updates, and industry insights from Baku Cardboard LLC.",
+    "newsletterTitle": "Don't miss the updates",
+    "newsletterDesc": "Subscribe to our newsletter to receive the latest news directly to your inbox.",
+    "placeholder": "Your email address",
+    "subscribe": "Subscribe"
+  },
+  "contactSection": {
+    "location": "Our Location",
+    "talkTitle": "Talk to Us",
+    "talkSubtitle": "Our team is always at your service for orders, information, or suggestions.",
+    "addressLabel": "Address",
+    "addressValue": "Baku, Azerbaijan",
+    "emailLabel": "E-mail",
+    "emailValue": "info@bakikarton.az",
+    "phoneLabel": "Phone",
+    "formTitle": "Contact Form",
+    "formSubtitle": "Please fill in all fields.",
+    "namePlaceholder": "Your Full Name",
+    "emailPlaceholder": "Your Email",
+    "phonePlaceholder": "Phone Number",
+    "selectSubject": "Select Subject",
+    "option1": "Cardboard Sheet Order",
+    "option2": "Cardboard Order",
+    "msgPlaceholder": "Your Message",
+    "sendButton": "SEND"
+  },
+  "careerPage": {
+    "heroTitle": "Pack Your",
+    "heroHighlight": "Future with Us",
+    "careerOpportunity": "Career Opportunities",
+    "subTitle": "At Baku Karton, we don't just produce boxes; we build your professional future on sustainable foundations.",
+    "hrTitle": "Human Resources",
+    "recruitment": {
+      "title": "Recruitment Policy",
+      "shortDesc": "Transparent and merit-based recruitment process.",
+      "headDesc": "Baku Karton realizes that its most valuable investment for creating a difference in a globalizing world is its human resources. To this end, it places great importance on the motivation and satisfaction of its employees.",
+      "mainDescPart1": "Baku Karton, which provides employment opportunities to thousands of people, takes pride in being beneficial to society while continuing its development and growth.",
+      "mainDescPart2": ", we believe in an organization formed by people who connect their lives with the future of the institution they work for and create value through their work."
+    },
+    "education": {
+      "title": "Education and Development",
+      "shortDesc": "Enhancing professional skills and continuous learning.",
+      "descPart1": "Baku Karton continues its training activities to bring the training and development activities of employees operating at various levels to the same level within the framework of its vision and future strategies.",
+      "descPart2": "Established for this purpose, the",
+      "academyName": "Baku Karton Academy",
+      "descPart3": "considers both the individual requirements of the employees and the needs of the company.",
+      "descPart4": "Our trainings are categorized as",
+      "training1": "Orientation Trainings",
+      "training2": "Personal Development Trainings",
+      "training3": "and",
+      "training4": "Technical Development Trainings",
+      "descPart5": "."
+    },
+    "form": {
+      "title": "Application Form",
+      "desc": "Send us your CV.",
+      "nameLabel": "Full Name",
+      "emailLabel": "E-mail",
+      "cvLabel": "CV (PDF)",
+      "sendBtn": "SEND",
+      "sending": "Sending...",
+      "success": "Your application has been sent successfully!"
+    }
   }
 }

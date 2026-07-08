@@ -1,11 +1,13 @@
 import { getMehsullar } from "@/lib/strapi";
 import ProductCard from "@/components/ProductCard";
 
-
-export default async function ProductsPage() {
-  const mehsullar = await getMehsullar()
-
-
+export default async function ProductsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params; // locale-ni buradan al
+  const mehsullar = await getMehsullar();
   return (
     <main className="min-h-screen bg-white">
       {/* HEADER BÖLMƏSİ (Eynilə qalır) */}
@@ -25,14 +27,17 @@ export default async function ProductsPage() {
         {mehsullar && mehsullar.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {mehsullar.map((item: any, index: number) => (
-              <ProductCard 
+              <ProductCard
                 key={item.id || index}
                 index={index}
                 title={item.title}
+                Productname={item.Productname}
                 description={item.description}
                 image={item.image}
                 features={item.features}
-                slug={item.slug} 
+                slug={item.slug}
+                locale={locale}
+                // slug={item.slug || "karton-qutu"}
               />
             ))}
           </div>
@@ -42,7 +47,6 @@ export default async function ProductsPage() {
           </div>
         )}
       </section>
-
     </main>
   );
 }

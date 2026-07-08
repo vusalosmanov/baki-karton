@@ -1,6 +1,5 @@
 import { getDictionary } from "@/lib/get-dictionary";
 
-// TypeScript interfeysini tək və təmiz şəkildə bura təyin edirik
 interface AboutPageProps {
   params: Promise<{ locale: string }>;
 }

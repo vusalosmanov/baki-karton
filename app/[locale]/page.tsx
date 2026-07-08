@@ -1,7 +1,8 @@
+// 'use client';  
 import { getStrapiImageByTitle } from "@/lib/strapi";
 import AboutSection from "@/components/AboutSection";
 import { getDictionary } from "@/lib/get-dictionary";
-
+import Link from "next/link";
 export default async function Home({
   params,
 }: {
@@ -11,8 +12,11 @@ export default async function Home({
   const { locale } = await params;
 
   // 2. Həmin dilə uyğun JSON lüğətini yükləyirik
-const dict = await getDictionary(locale as "az" | "en") as Record<string, any>;
-const t = dict?.home || {};
+  const dict = (await getDictionary(locale as "az" | "en")) as Record<
+    string,
+    any
+  >;
+  const t = dict?.home || {};
   // 3. Şəkilləri Strapi-dən çəkirik
   const homeImage = await getStrapiImageByTitle("Home-image");
   const aboutSectionImage = await getStrapiImageByTitle("Home-sec-2");
@@ -255,19 +259,23 @@ const t = dict?.home || {};
                     {t.boxTitle}
                   </h3>
                   <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-[#004a99] group-hover:border-[#004a99] transition-all duration-500">
-                    <svg
-                      className="w-5 h-5 text-slate-400 group-hover:text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
+                      <Link href={`/${locale}/mehsullar/karton-qutu`}>
+                    <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-[#004a99] group-hover:border-[#004a99] transition-all duration-500 cursor-pointer">
+                      <svg
+                        className="w-5 h-5 text-slate-400 group-hover:text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </svg>
+                    </div>
+                  </Link>
                   </div>
                 </div>
 
@@ -305,21 +313,23 @@ const t = dict?.home || {};
                   <h3 className="text-2xl font-bold text-slate-800 group-hover:text-[#004a99] transition-colors">
                     {t.listTitle}
                   </h3>
-                  <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-[#004a99] group-hover:border-[#004a99] transition-all duration-500">
-                    <svg
-                      className="w-5 h-5 text-slate-400 group-hover:text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </div>
+                  <Link href={`/${locale}/mehsullar/karton-list`}>
+                    <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-[#004a99] group-hover:border-[#004a99] transition-all duration-500 cursor-pointer">
+                      <svg
+                        className="w-5 h-5 text-slate-400 group-hover:text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </svg>
+                    </div>
+                  </Link>
                 </div>
 
                 <div className="relative h-[500px] overflow-hidden rounded-xl shadow-xl border border-slate-100">
