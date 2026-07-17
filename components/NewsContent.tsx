@@ -11,7 +11,6 @@ export default function NewsContent({
   locale: string;
   dict: Record<string, any>;
 }) {
-  // JSON-dan kateqoriyaları alırıq
   const categories = dict?.news?.categories || [
     "All",
     "Official",
@@ -21,7 +20,6 @@ export default function NewsContent({
   ];
 
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-
 
   const filteredNews = initialNews.filter((item: any) => {
     if (selectedCategory === categories[0]) return true;
@@ -55,6 +53,7 @@ export default function NewsContent({
           </button>
         ))}
       </div>
+
       {filteredNews.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-dashed border-gray-200">
           <p className="text-gray-400 font-medium">
@@ -65,30 +64,34 @@ export default function NewsContent({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {filteredNews.map((item: any) => {
-            const strapiPath = item.image?.[0]?.url;
-            const imageUrl = strapiPath
-              ? `http://localhost:1337${strapiPath}`
-              : "/placeholder-news.jpg";
+            const rawPath = item.image;
+            console.log("Xəbər obyekti:", item);
+            const imageUrl = rawPath
+              ? rawPath.startsWith("http")
+                ? rawPath
+                : `http://83.229.84.217:5000${rawPath}`
+              : null;
 
             return (
               <NewsCard
                 key={item.id}
                 title={item.title}
-                image={imageUrl}
                 category={item.category?.trim()}
-                description={item.description}
-                date={new Date(item.createdAt).toLocaleDateString(
-                  locale === "az" ? "az-AZ" : "en-US",
-                )}
-                slug={item.slug}
+                description={item.description} // app.py-da "description" olaraq göndərmişdik
+                date={
+                  item.createdAt
+                    ? new Date(item.createdAt).toLocaleDateString("az-AZ")
+                    : ""
+                }
+                id={item.id}
                 locale={locale}
+                image={imageUrl}
               />
             );
           })}
         </div>
       )}
 
-      {/* Pagination */}
       <div className="mt-16 flex justify-center space-x-2">
         <button className="w-12 h-12 rounded-xl border border-gray-200 flex items-center justify-center bg-white shadow-sm text-[#1a3352] font-bold">
           1

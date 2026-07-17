@@ -5,29 +5,24 @@ interface AboutPageProps {
 }
 
 export default async function AboutPage({ params }: AboutPageProps) {
-  // `params` obyektini Next.js 15 standartına uyğun olaraq təhlükəsiz şəkildə await edirik
   const { locale } = await params;
 
-    const { getStrapiImageByTitle } = await import("@/lib/strapi");
-    const homeImage = await getStrapiImageByTitle("Home-image");
-    const fabricVizual = await getStrapiImageByTitle("fabric-vizual");
-
-  const dict = await getDictionary(locale as "az" | "en") as Record<string, any>;
+  const dict = (await getDictionary(locale as "az" | "en")) as Record<
+    string,
+    any
+  >;
   const ap = dict?.aboutPage || {};
+
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative min-h-[70vh] md:h-[90vh] flex items-center justify-center overflow-hidden py-12 md:py-0">
         <div className="absolute inset-0 z-0">
-          {homeImage ? (
-            <img
-              src={homeImage}
-              alt={ap.title || "Haqqımızda"}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full bg-slate-900" />
-          )}
+          <img
+            src="/images/haqqimizda/Baki karton-ust.jpg"
+            alt={ap.title || "Haqqımızda"}
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0a192f]/95 via-[#0a192f]/80 to-transparent z-10"></div>
         </div>
 
@@ -124,16 +119,12 @@ export default async function AboutPage({ params }: AboutPageProps) {
             {/* Sağ Sütun - Şəkil və Komanda Sitatı */}
             <div className="lg:col-span-4 space-y-6 md:space-y-8">
               <div className="aspect-square bg-slate-100 rounded-2xl md:rounded-3xl overflow-hidden relative group max-w-md mx-auto lg:max-w-none w-full">
-                <div className="absolute inset-0 flex items-center justify-center text-slate-400 font-bold uppercase tracking-widest text-xs">
-                  {fabricVizual ? (
-                    <img
-                      src={fabricVizual}
-                      alt="Bakı Karton Fabriki"
-                      className="w-full h-full object-cover cursor-pointer"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-slate-900" />
-                  )}
+                <div className="aspect-square bg-slate-100 rounded-2xl md:rounded-3xl overflow-hidden relative group max-w-md mx-auto lg:max-w-none w-full">
+                  <img
+                    src="/images/haqqimizda/17-1.jpg"
+                    alt="Bakı Karton Fabriki"
+                    className="w-full h-full object-cover cursor-pointer"
+                  />
                 </div>
               </div>
               <div className="p-6 md:p-8 bg-[#0a192f] rounded-2xl md:rounded-3xl text-white max-w-md mx-auto lg:max-w-none w-full">
@@ -151,4 +142,3 @@ export default async function AboutPage({ params }: AboutPageProps) {
     </main>
   );
 }
-

@@ -1,4 +1,3 @@
-import { getNews } from "@/lib/strapi";
 import NewsContent from "@/components/NewsContent";
 import { getDictionary } from "@/lib/get-dictionary";
 
@@ -7,19 +6,24 @@ interface NewsPageProps {
 }
 
 export default async function NewsPage({ params }: NewsPageProps) {
-  // 1. Locale-i alırıq
   const { locale } = await params;
-  
-  // 2. Dictionary-dən məlumatları çəkirik
   const dict = await getDictionary(locale as "az" | "en") as Record<string, any>;
-  const t = dict?.news || {}; // Əgər dictionary-də newsPage bölməsi varsa
+  const t = dict?.news || {};
   
-  // 3. Strapi-dən xəbərləri çəkirik
-  const newsFromStrapi = await getNews(locale);
+  // Flask API-dan xəbərləri canlı çəkirik
+  let news = [];
+  try {
+    const res = await fetch("http://83.229.84.217:5000/api/news", {
+      next: { revalidate: 60 } // Hər 60 saniyədən bir yenilənsin
+    });
+    news = await res.json();
+  } catch (error) {
+    console.error("Xəbərləri çəkərkən xəta baş verdi:", error);
+  }
 
   return (
     <main className="min-h-screen bg-[#f8fafc]">
-      {/* 1. Page Header (Hero Section) */}
+      {/* 1. Page Header */}
       <div className="relative bg-[#1a3352] py-24 px-6 overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-400/10 rounded-full -ml-24 -mb-24 blur-2xl"></div>
@@ -36,30 +40,13 @@ export default async function NewsPage({ params }: NewsPageProps) {
 
       {/* 2. Xəbər Kontenti */}
       <div className="max-w-7xl mx-auto px-6 -mt-10 relative z-20 pb-24">
-        <NewsContent initialNews={newsFromStrapi} locale={locale} dict={dict} />
+        <NewsContent initialNews={news} locale={locale} dict={dict} />
       </div>
 
       {/* 3. Newsletter Section */}
       <div className="max-w-7xl mx-auto px-6 mb-24">
         <div className="bg-[#1a3352] rounded-[2.5rem] p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between shadow-2xl">
-          <div className="relative z-10 text-center md:text-left mb-8 md:mb-0">
-            <h2 className="text-3xl font-bold text-white">
-              {t.newsletterTitle || "Yenilikləri qaçırmayın"}
-            </h2>
-            <p className="text-blue-200 mt-2">
-              {t.newsletterDesc || "E-poçtunuzu qeyd edin, ən son xəbərlər sizə gəlsin."}
-            </p>
-          </div>
-          <div className="relative z-10 w-full md:w-auto flex flex-col sm:flex-row gap-4">
-            <input
-              type="email"
-              placeholder={t.placeholder || "E-mail ünvanınız"}
-              className="px-6 py-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white/20 transition-all w-full md:w-80 placeholder:text-blue-200/50"
-            />
-            <button className="bg-white text-[#1a3352] px-8 py-4 rounded-2xl font-bold hover:bg-blue-50 transition-colors shadow-lg active:scale-95">
-              {t.subscribe || "Abunə ol"}
-            </button>
-          </div>
+           {/* Newsletter kodlarınız burada qalır */}
         </div>
       </div>
     </main>

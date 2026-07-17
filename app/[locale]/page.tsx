@@ -1,49 +1,33 @@
-// 'use client';  
-import { getStrapiImageByTitle } from "@/lib/strapi";
 import AboutSection from "@/components/AboutSection";
 import { getDictionary } from "@/lib/get-dictionary";
 import Link from "next/link";
+
 export default async function Home({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  // 1. Cari dili asinxron olaraq alırıq
   const { locale } = await params;
-
-  // 2. Həmin dilə uyğun JSON lüğətini yükləyirik
   const dict = (await getDictionary(locale as "az" | "en")) as Record<
     string,
     any
   >;
   const t = dict?.home || {};
-  // 3. Şəkilləri Strapi-dən çəkirik
-  const homeImage = await getStrapiImageByTitle("Home-image");
-  const aboutSectionImage = await getStrapiImageByTitle("Home-sec-2");
-  const homeEcoBg = await getStrapiImageByTitle("Home-eco");
-  const homeCategoryBox = await getStrapiImageByTitle("Karton-qutu");
-  const homeCategoryList = await getStrapiImageByTitle("karton-list");
-  const homeManagment = await getStrapiImageByTitle("managment");
-  const homeKartonWorld = await getStrapiImageByTitle("karton-world");
-  const homeHappy = await getStrapiImageByTitle("happy");
+
+  // QEYD: Strapi funksiyaları silindi.
+  // Şəkilləri `src="/images/home-hero.jpg"` kimi birbaşa public qovluğundan çağıra bilərsən.
 
   return (
     <main className="w-full">
       {/* Hero Section */}
       <section className="relative w-full h-[calc(100vh-80px)] min-h-[500px] overflow-hidden bg-gray-900">
-        {homeImage ? (
-          <div className="absolute inset-0 w-full h-full">
-            <img
-              src={homeImage}
-              alt="Bakı Karton İstehsalat"
-              className="w-full h-full object-cover opacity-80"
-            />
-          </div>
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-white italic">
-            Ana səhifə şəkli yüklənir...
-          </div>
-        )}
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src="/images/haqqimizda/Baki karton-ust.jpg" // Buranı öz şəkil yolunla dəyiş
+            alt="Bakı Karton İstehsalat"
+            className="w-full h-full object-cover opacity-80"
+          />
+        </div>
 
         <div className="absolute inset-0 flex items-center justify-start px-6 md:px-26">
           <div className="max-w-[1700px] text-left bg-black/30 backdrop-blur-[2px] p-8 md:p-12 border-l-4 border-red-600">
@@ -72,22 +56,17 @@ export default async function Home({
           </div>
         </div>
       </section>
-
-      <AboutSection image={aboutSectionImage} dict={dict} />
+      <AboutSection dict={dict} />
 
       {/* Dayanıqlılıq Bölməsi */}
       <section className="relative py-28 group overflow-hidden">
         <div className="absolute inset-0 z-0">
-          {homeEcoBg ? (
-            <div
-              className="w-full h-full bg-cover bg-center bg-no-repeat bg-fixed"
-              style={{ backgroundImage: `url(${homeEcoBg})` }}
-              role="img"
-              aria-label="Dayanıqlılıq və Ekologiya"
-            />
-          ) : (
-            <div className="w-full h-full bg-emerald-950"></div>
-          )}
+          <div
+            className="w-full h-full bg-cover bg-center bg-no-repeat bg-fixed"
+            style={{ backgroundImage: `url('/images/about/eco.webp')` }}
+            role="img"
+            aria-label="Dayanıqlılıq və Ekologiya"
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-emerald-950/40 to-black/70"></div>
         </div>
 
@@ -253,46 +232,44 @@ export default async function Home({
             {/* 1. Karton Qutu */}
             <div className="group relative cursor-pointer">
               <div className="absolute -inset-4 bg-[#004a99]/5 rounded-[2rem] scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 z-0"></div>
+
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4 px-2">
                   <h3 className="text-2xl font-bold text-slate-800 group-hover:text-[#004a99] transition-colors">
                     {t.boxTitle}
                   </h3>
-                  <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-[#004a99] group-hover:border-[#004a99] transition-all duration-500">
-                      <Link href={`/${locale}/mehsullar/karton-qutu`}>
-                    <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-[#004a99] group-hover:border-[#004a99] transition-all duration-500 cursor-pointer">
-                      <svg
-                        className="w-5 h-5 text-slate-400 group-hover:text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </div>
+
+                  {/* Linki birbaşa bura verdik */}
+                  <Link
+                    href={`/${locale}/mehsullar/karton-qutu`}
+                    className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-[#004a99] group-hover:border-[#004a99] transition-all duration-500"
+                  >
+                    <svg
+                      className="w-5 h-5 text-slate-400 group-hover:text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
                   </Link>
-                  </div>
                 </div>
 
+                {/* Şəkil və Gradient hissəsi */}
                 <div className="relative h-[500px] overflow-hidden rounded-xl shadow-xl border border-slate-100">
-                  {homeCategoryBox ? (
-                    <img
-                      src={homeCategoryBox}
-                      alt="Karton qutu istehsalı"
-                      className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-slate-100 animate-pulse flex items-center justify-center">
-                      <span className="text-slate-400 font-medium">
-                        Şəkil yüklənir...
-                      </span>
-                    </div>
-                  )}
+                  {/* Şəkil buraya əlavə olundu */}
+                  <img
+                    src="/images/about/Karton-qutu.jpg" // Şəkil yolunu bura qoy
+                    alt={t.boxTitle}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+
+                  {/* Hover zamanı çıxan yazı və gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#004a99]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10">
                     <span className="text-white/70 text-sm uppercase tracking-widest mb-2">
                       {t.production}
@@ -333,19 +310,11 @@ export default async function Home({
                 </div>
 
                 <div className="relative h-[500px] overflow-hidden rounded-xl shadow-xl border border-slate-100">
-                  {homeCategoryList ? (
-                    <img
-                      src={homeCategoryList}
-                      alt="Karton list istehsalı"
-                      className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-slate-100 animate-pulse flex items-center justify-center">
-                      <span className="text-slate-400 font-medium">
-                        Şəkil yüklənir...
-                      </span>
-                    </div>
-                  )}
+                  <img
+                    src="/images/about/Karton-list.jpeg" // Şəkil yolunu bura qoy
+                    alt={t.boxTitle}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#004a99]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10">
                     <span className="text-white/70 text-sm uppercase tracking-widest mb-2">
                       {t.rawMaterial}
@@ -381,7 +350,7 @@ export default async function Home({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
             {[
               {
-                img: homeManagment,
+                // img: ,
                 title:
                   locale === "az"
                     ? "Azərbaycan Respublikasının Prezidenti İlham Əliyev yanvarın 27-də Sumqayıt Sənaye..."
@@ -393,7 +362,7 @@ export default async function Home({
                 date: "27.01.2026",
               },
               {
-                img: homeKartonWorld,
+                // img: ,
                 title:
                   locale === "az"
                     ? "Karton Qutu İstehsalının Gizli Dünyası: Texnologiya və Dəqiqliyin Vəhdəti"
@@ -405,7 +374,7 @@ export default async function Home({
                 date: "15.02.2026",
               },
               {
-                img: homeHappy,
+                // img: ,
                 title:
                   locale === "az"
                     ? "Biznesinizi Dəyişdirən Qablaşdırma: Funksiyadan Daha Artığı"
@@ -422,15 +391,15 @@ export default async function Home({
                 className="group relative flex flex-col h-full bg-[#112240] border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all duration-500 shadow-2xl"
               >
                 <div className="relative h-72 overflow-hidden">
-                  {news.img ? (
+                  {/* {news.img ? (
                     <img
-                      src={news.img}
+                      // src={news.img}
                       alt={news.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1"
                     />
                   ) : (
                     <div className="w-full h-full bg-slate-800 animate-pulse" />
-                  )}
+                  )} */}
                   <div className="absolute top-4 left-4 px-4 py-2 bg-black/40 backdrop-blur-md rounded-lg border border-white/10 shadow-lg">
                     <span className="text-white text-xs font-bold tracking-wider">
                       {news.date}

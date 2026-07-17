@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -15,36 +15,18 @@ interface NavLink {
   dropdownItems?: DropdownItem[];
 }
 
-// Layout-dan gələcək propları təyin edirik
 interface NavbarProps {
   locale: "az" | "en";
   dict: any;
 }
 
 export default function Navbar({ locale, dict }: NavbarProps) {
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
   
   const pathname = usePathname();
-
-  // JSON faylından gələn naviqasiya tərcümələri (əgər yoxdursa defolt sözlər)
   const n = dict?.navigation || {};
 
-  useEffect(() => {
-    async function fetchLogo() {
-      try {
-        const { getStrapiImageByTitle } = await import("@/lib/strapi");
-        const url = await getStrapiImageByTitle("Logo");
-        setLogoUrl(url);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchLogo();
-  }, []);
-
-  // Dilə görə linklərin strukturunu və tərcümələrini dinamik edirik
   const navLinks: NavLink[] = [
     { href: `/${locale}/haqqimizda`, label: n.about || "Haqqımızda" },
     { 
@@ -64,11 +46,9 @@ export default function Navbar({ locale, dict }: NavbarProps) {
     { href: `/${locale}/elaqe`, label: n.contact || "Əlaqə" },
   ];
 
-  // Cari səhifəni saxlayaraq yalnız dili dəyişmək üçün funksiya
   const getLanguageLink = (targetLocale: string) => {
-    // pathname formatı: "/az/mehsullar" və ya "/en/about"
     const segments = pathname.split("/");
-    segments[1] = targetLocale; // birinci elementi (az və ya en) hədəf dillə əvəzləyirik
+    segments[1] = targetLocale;
     return segments.join("/");
   };
 
@@ -79,11 +59,11 @@ export default function Navbar({ locale, dict }: NavbarProps) {
         {/* Loqo Bölməsi */}
         <div className="flex-shrink-0">
           <Link href={`/${locale}`}>
-            {logoUrl ? (
-              <img src={logoUrl} alt="Bakı Karton" className="h-12 md:h-16 w-auto object-contain" />
-            ) : (
-              <span className="text-xl md:text-2xl font-bold text-red-600 uppercase tracking-tighter">BAKI KARTON</span>
-            )}
+            <img 
+              src="/images/brand/baku-krt-lg.png" // Fayl yolunu öz loqona uyğun dəyiş
+              alt="Bakı Karton" 
+              className="h-12 md:h-16 w-auto object-contain" 
+            />
           </Link>
         </div>
 
@@ -122,102 +102,48 @@ export default function Navbar({ locale, dict }: NavbarProps) {
           ))}
         </nav>
 
-        {/* Dil Seçimi (Masaüstü) */}
+        {/* Dil Seçimi & Mobil Düymə */}
         <div className="flex items-center space-x-4">
           <div className="hidden sm:flex items-center space-x-2 text-[#1a2e35] font-bold text-sm border-l pl-6 border-gray-100">
-            <Link 
-              href={getLanguageLink("az")} 
-              className={`transition-colors ${locale === "az" ? "text-red-600 underline" : "text-gray-400 hover:text-red-600"}`}
-            >
-              AZ
-            </Link>
+            <Link href={getLanguageLink("az")} className={`transition-colors ${locale === "az" ? "text-red-600 underline" : "text-gray-400 hover:text-red-600"}`}>AZ</Link>
             <span className="w-[1px] h-3 bg-gray-200"></span>
-            <Link 
-              href={getLanguageLink("en")} 
-              className={`transition-colors ${locale === "en" ? "text-red-600 underline" : "text-gray-400 hover:text-red-600"}`}
-            >
-              EN
-            </Link>
+            <Link href={getLanguageLink("en")} className={`transition-colors ${locale === "en" ? "text-red-600 underline" : "text-gray-400 hover:text-red-600"}`}>EN</Link>
           </div>
 
-          {/* Mobil Menyu Düyməsi */}
-          <button 
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-[#1a2e35] hover:text-red-600 transition-colors focus:outline-none"
-          >
+          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden p-2 text-[#1a2e35] hover:text-red-600 transition-colors">
             {isMobileMenuOpen ? (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             ) : (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
             )}
           </button>
         </div>
-
       </div>
 
       {/* Mobil Menyu Paneli */}
       <div className={`lg:hidden fixed inset-x-0 top-[93px] bottom-0 bg-white z-40 border-t border-gray-100 transition-all duration-300 transform ${isMobileMenuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"}`}>
         <div className="flex flex-col h-full overflow-y-auto p-6 space-y-4">
           {navLinks.map((link) => (
-            <div key={link.href} className="w-full">
+            <div key={link.href}>
               {link.hasDropdown ? (
                 <div>
-                  <button 
-                    onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
-                    className="w-full flex items-center justify-between py-3 text-lg font-semibold text-[#1a2e35]"
-                  >
+                  <button onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)} className="w-full flex items-center justify-between py-3 text-lg font-semibold text-[#1a2e35]">
                     <span>{link.label}</span>
-                    <svg className={`w-5 h-5 transition-transform duration-200 ${isMobileDropdownOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <svg className={`w-5 h-5 transition-transform duration-200 ${isMobileDropdownOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                   </button>
                   <div className={`pl-4 space-y-2 overflow-hidden transition-all duration-300 ${isMobileDropdownOpen ? "max-h-40 opacity-100 mt-2" : "max-h-0 opacity-0"}`}>
                     {link.dropdownItems?.map((subLink) => (
-                      <Link
-                        key={subLink.href}
-                        href={subLink.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="block py-2 text-base font-medium text-gray-600 hover:text-red-600"
-                      >
+                      <Link key={subLink.href} href={subLink.href} onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-base font-medium text-gray-600 hover:text-red-600">
                         {subLink.label}
                       </Link>
                     ))}
                   </div>
                 </div>
               ) : (
-                <Link
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block py-3 text-lg font-semibold text-[#1a2e35] hover:text-red-600 transition-colors"
-                >
-                  {link.label}
-                </Link>
+                <Link href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="block py-3 text-lg font-semibold text-[#1a2e35] hover:text-red-600">{link.label}</Link>
               )}
             </div>
           ))}
-
-          {/* Dil Seçimi (Mobil) */}
-          <div className="sm:hidden flex items-center space-x-2 text-[#1a2e35] font-bold text-base pt-6 border-t border-gray-100">
-            <Link 
-              href={getLanguageLink("az")} 
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`transition-colors ${locale === "az" ? "text-red-600 underline" : "text-gray-400"}`}
-            >
-              AZ
-            </Link>
-            <span className="w-[1px] h-4 bg-gray-200"></span>
-            <Link 
-              href={getLanguageLink("en")} 
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`transition-colors ${locale === "en" ? "text-red-600 underline" : "text-gray-400"}`}
-            >
-              EN
-            </Link>
-          </div>
         </div>
       </div>
     </header>
