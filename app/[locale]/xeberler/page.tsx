@@ -13,7 +13,7 @@ export default async function NewsPage({ params }: NewsPageProps) {
   // Flask API-dan xəbərləri canlı çəkirik
   let news = [];
   try {
-    const res = await fetch("http://83.229.84.217:5000/api/news", {
+    const res = await fetch("https://bakikarton.az/api/news", {
       next: { revalidate: 60 } 
     });
     news = await res.json();
