@@ -326,8 +326,8 @@ export default async function Home({
 
                 <div className="relative h-[500px] overflow-hidden rounded-xl shadow-xl border border-slate-100">
                   <img
-                    src="/images/about/Karton-list.jpeg" // Şəkil yolunu bura qoy
-                    alt={t.boxTitle}
+                    src="/images/brand/karton-list.jpg" // Şəkil yolunu bura qoy
+                    alt={t.listTitle}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#004a99]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10">

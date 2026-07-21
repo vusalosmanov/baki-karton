@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { postMessage } from "@/lib/strapi";
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
