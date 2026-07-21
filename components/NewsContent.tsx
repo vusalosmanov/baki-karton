@@ -76,8 +76,11 @@ export default function NewsContent({
             const rawPath = item.image_url;
             const imageUrl = rawPath
               ? rawPath.startsWith("http")
-                ? rawPath
-                : `http://83.229.84.217:5000${rawPath}`
+                ? rawPath.replace(
+                    "http://83.229.84.217:5000",
+                    "https://bakikarton.az",
+                  )
+                : `https://bakikarton.az${rawPath}`
               : null;
 
             return (

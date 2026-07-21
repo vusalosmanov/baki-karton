@@ -13,13 +13,15 @@ export default async function NewsPage({ params }: NewsPageProps) {
   // Flask API-dan xəbərləri canlı çəkirik
   let news = [];
   try {
-    const res = await fetch("https://bakikarton.az/api/news", {
+    const res = await fetch("http://83.229.84.217:5000/api/news", {
       next: { revalidate: 60 } 
     });
     news = await res.json();
   } catch (error) {
     console.error("Xəbərləri çəkərkən xəta baş verdi:", error);
   }
+
+  
 
   return (
     <main className="min-h-screen bg-[#f8fafc]">
