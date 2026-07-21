@@ -8,9 +8,17 @@ export default function ProductCard({
   image,
   locale,
 }: any) {
-  const imageUrl = image.startsWith("http")
-    ? image
-    : `http://83.229.84.217:5000${image}`;
+  const imageUrl = image
+    ? image.startsWith("http")
+      ? image
+      : `http://83.229.84.217:5000${image}`
+    : "/placeholder.png";
+
+  // Brauzer HTTPS-də işləyirsə, HTTP linkini avtomatik HTTPS-ə çeviririk:
+  const secureImageUrl =
+    typeof window !== "undefined" && window.location.protocol === "https:"
+      ? imageUrl.replace("http://", "https://")
+      : imageUrl;
 
   return (
     <div className="group relative">
@@ -45,7 +53,7 @@ export default function ProductCard({
           {/* Şəkil və üzərindəki məlumat hissəsi */}
           <div className="relative h-[380px] overflow-hidden mx-6 mb-6 rounded-2xl shadow-md">
             <img
-              src={imageUrl}
+              src={secureImageUrl}
               alt={title}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
