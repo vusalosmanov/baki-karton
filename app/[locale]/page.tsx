@@ -5,7 +5,7 @@ import Link from "next/link";
 // Backend-dən xəbərləri çəkmək üçün funksiya
 async function getNews() {
   try {
-    const res = await fetch("https://bakikarton.az/api/news", {
+    const res = await fetch("http://83.229.84.217:5000/api/news", {
       cache: "no-store", // Həmişə ən təzə məlumatı çəkmək üçün
     });
     if (!res.ok) return [];
@@ -31,7 +31,7 @@ export default async function Home({
   // Backend-dən xəbərləri alırıq
   const initialNews = await getNews();
   const latestNews = initialNews.slice(0, 3);
- const BACKEND_URL = "https://bakikarton.az";
+  const BACKEND_URL = "http://83.229.84.217:5000";
   return (
     <main className="w-full">
       {/* Hero Section */}
@@ -367,10 +367,12 @@ export default async function Home({
               const rawPath = news.image_url || news.image;
               const imageUrl = rawPath
                 ? rawPath.startsWith("http")
-                  ? rawPath
-                  : `${BACKEND_URL}${rawPath}`
+                  ? rawPath.replace(
+                      "http://83.229.84.217:5000",
+                      "https://bakikarton.az",
+                    )
+                  : `https://bakikarton.az${rawPath}`
                 : null;
-
               // Tarix formatı
               const formattedDate = news.createdAt
                 ? new Date(news.createdAt).toLocaleDateString("az-AZ")
