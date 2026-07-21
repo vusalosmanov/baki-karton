@@ -29,13 +29,12 @@ export default async function SingleNewsPage({
   }
 
   // JSON-da 'image_url' və ya 'image' ola biləcəyini nəzərə alırıq
-  const rawPath = news.image_url || news.image;
+const rawPath = news.image_url || news.image;
   const imageUrl = rawPath
     ? rawPath.startsWith("http")
-      ? rawPath
-      : `http://83.229.84.217:5000${rawPath}`
+      ? rawPath.replace("http://83.229.84.217:5000", "https://bakikarton.az")
+      : `https://bakikarton.az${rawPath}`
     : "/placeholder.jpg";
-
   return (
     <main className="min-h-screen bg-white pb-24">
       <article className="max-w-5xl mx-auto px-6">
