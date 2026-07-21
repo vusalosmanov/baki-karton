@@ -1,59 +1,33 @@
-"use client";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-interface ProductCardProps {
-  title: string;
-  description: string;
-  image: string;
-  features: any;
-  slug: string;
-  index: number;
-  locale: string;
-  Productname: string;
-}
 
 export default function ProductCard({
+  id,
   title,
   description,
+  category,
   image,
-  features,
-  slug,
-  index,
-  Productname
-
-}: ProductCardProps) {
-  const params = useParams(); // URL parametrlərini götür
-  const locale = params.locale || "az";
-  const colors = [
-    "from-blue-600 to-blue-800",
-    "from-gray-700 to-gray-900",
-    "from-emerald-600 to-emerald-800",
-    "from-slate-700 to-slate-900",
-  ];
-  const currentColor = colors[index % colors.length];
+  locale,
+}: any) {
+  const imageUrl = image.startsWith("http")
+    ? image
+    : `http://83.229.84.217:5000${image}`;
 
   return (
     <div className="group relative">
-      <div
-        className={`absolute inset-0 bg-gradient-to-br ${currentColor} rounded-[3rem] transform transition-all duration-500 group-hover:scale-[1.02] shadow-2xl`}
-      />
+      {/* Arxa fondakı zərif kölgə effekti (Hover olanda çıxır) */}
+      <Link href={`/${locale}/mehsullar/${id}`}>
+        <div className="absolute -inset-4 bg-[#004a99]/5 rounded-[2rem] scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 z-0"></div>
 
-      <div className="relative p-10 h-full flex flex-col justify-between min-h-[550px] overflow-hidden rounded-[3rem]">
-        <div className="absolute -right-10 -top-10 w-64 h-64 opacity-20 group-hover:opacity-40 transition-all duration-500 pointer-events-none group-hover:rotate-0 -rotate-12 scale-110">
-          {image && (
-            <img
-              src={image}
-              alt={title}
-              className="w-full h-full object-contain"
-            />
-          )}
-        </div>
+        <div className="relative z-10 flex flex-col bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm transition-all duration-500">
+          {/* Üst hissə: Başlıq və Keçid Düyməsi */}
+          <div className="flex items-center justify-between p-6 pb-4">
+            <h3 className="text-2xl font-bold text-slate-800 group-hover:text-[#004a99] transition-colors">
+              {title}
+            </h3>
 
-        <div>
-          <div className="flex justify-between items-start mb-8">
-            <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+            <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-[#004a99] group-hover:border-[#004a99] transition-all duration-500 cursor-pointer">
               <svg
-                className="w-8 h-8 text-white"
+                className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -61,61 +35,33 @@ export default function ProductCard({
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                  strokeWidth="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
             </div>
-            <span className="text-white/30 font-black text-6xl select-none">
-              0{index + 1}
-            </span>
           </div>
-          <h2 className="text-4xl font-black text-white mb-4 tracking-tight uppercase">
-            {title}
-          </h2>
-          <p className="text-white/80 text-lg mb-8 font-medium leading-relaxed line-clamp-3">
-            {description
-              ? description
-              : "Məhsul haqqında məlumat daxil edilməyib."}
-          </p>
 
-          <div className="flex flex-wrap gap-3 mb-10">
-            {features && Array.isArray(features)
-              ? features.map((f: any, i: number) => (
-                  <span
-                    key={i}
-                    className="px-4 py-1.5 bg-black/20 backdrop-blur-sm rounded-full text-white/90 text-xs font-bold uppercase tracking-widest border border-white/5"
-                  >
-                    {typeof f === "string" ? f : f.feature_item || f.text}
-                  </span>
-                ))
-              : null}
+          {/* Şəkil və üzərindəki məlumat hissəsi */}
+          <div className="relative h-[380px] overflow-hidden mx-6 mb-6 rounded-2xl shadow-md">
+            <img
+              src={imageUrl}
+              alt={title}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+
+            {/* Şəkil üzərindəki mavi gradient və hover zamanı açılan açıq mavi fon */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#004a99]/90 via-[#004a99]/30 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-500 flex flex-col justify-end p-8">
+              <span className="text-white/80 text-xs uppercase tracking-widest font-semibold mb-2">
+                {category}
+              </span>
+              <p className="text-white text-base font-medium leading-snug line-clamp-2">
+                {description}
+              </p>
+            </div>
           </div>
         </div>
-        <Link
-          href={`/${locale}/mehsullar/${slug}`}
-          className="inline-flex items-center justify-between w-full p-6 bg-white rounded-2xl group/btn hover:bg-gray-50 transition-all duration-300"
-        >
-          <span className="text-gray-900 font-black uppercase tracking-widest text-sm">
-            Məhsullara bax
-          </span>
-          <div className="bg-gray-900 p-2 rounded-lg transition-transform duration-300 group-hover/btn:translate-x-2">
-            <svg
-              className="w-5 h-5 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </div>
-        </Link>
-      </div>
+      </Link>
     </div>
   );
 }

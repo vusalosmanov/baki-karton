@@ -14,7 +14,7 @@ export default async function NewsPage({ params }: NewsPageProps) {
   let news = [];
   try {
     const res = await fetch("http://83.229.84.217:5000/api/news", {
-      next: { revalidate: 60 } // Hər 60 saniyədən bir yenilənsin
+      next: { revalidate: 60 } 
     });
     news = await res.json();
   } catch (error) {

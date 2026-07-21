@@ -22,18 +22,27 @@ export default function NewsContent({
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
   const filteredNews = initialNews.filter((item: any) => {
-    if (selectedCategory === categories[0]) return true;
-    const itemCat = item.category
-      ?.toLowerCase()
-      .trim()
-      .replace(/ə/g, "e")
-      .replace(/ı/g, "i");
-    const selectedCat = selectedCategory
-      .toLowerCase()
-      .trim()
-      .replace(/ə/g, "e")
-      .replace(/ı/g, "i");
-    return itemCat === selectedCat;
+    // 1. Əgər "Hamısı / All" seçilibsə hamısını göstər
+    if (
+      selectedCategory === categories[0] ||
+      selectedCategory === "All" ||
+      selectedCategory === "Hamısı"
+    ) {
+      return true;
+    }
+
+    // Əgər xəbərin kateqoriyası ümumiyyətlə yoxdursa
+    if (!item.category) return false;
+
+    // Hərfləri və boşluqları kiçildib müqayisə edirik
+    const itemCat = String(item.category).toLowerCase().trim();
+    const selectedCat = String(selectedCategory).toLowerCase().trim();
+
+    return (
+      itemCat === selectedCat ||
+      itemCat.includes(selectedCat) ||
+      selectedCat.includes(itemCat)
+    );
   });
 
   return (
@@ -64,8 +73,7 @@ export default function NewsContent({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {filteredNews.map((item: any) => {
-            const rawPath = item.image;
-            console.log("Xəbər obyekti:", item);
+            const rawPath = item.image_url;
             const imageUrl = rawPath
               ? rawPath.startsWith("http")
                 ? rawPath
@@ -77,11 +85,11 @@ export default function NewsContent({
                 key={item.id}
                 title={item.title}
                 category={item.category?.trim()}
-                description={item.description} // app.py-da "description" olaraq göndərmişdik
+                description={item.description}
                 date={
                   item.createdAt
                     ? new Date(item.createdAt).toLocaleDateString("az-AZ")
-                    : ""
+                    : item.date || ""
                 }
                 id={item.id}
                 locale={locale}

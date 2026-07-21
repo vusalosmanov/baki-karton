@@ -2,6 +2,20 @@ import AboutSection from "@/components/AboutSection";
 import { getDictionary } from "@/lib/get-dictionary";
 import Link from "next/link";
 
+// Backend-dən xəbərləri çəkmək üçün funksiya
+async function getNews() {
+  try {
+    const res = await fetch("http://83.229.84.217:5000/api/news", {
+      cache: "no-store", // Həmişə ən təzə məlumatı çəkmək üçün
+    });
+    if (!res.ok) return [];
+    return await res.json();
+  } catch (error) {
+    console.error("Xəbərləri çəkərkən xəta baş verdi:", error);
+    return [];
+  }
+}
+
 export default async function Home({
   params,
 }: {
@@ -14,9 +28,10 @@ export default async function Home({
   >;
   const t = dict?.home || {};
 
-  // QEYD: Strapi funksiyaları silindi.
-  // Şəkilləri `src="/images/home-hero.jpg"` kimi birbaşa public qovluğundan çağıra bilərsən.
-
+  // Backend-dən xəbərləri alırıq
+  const initialNews = await getNews();
+  const latestNews = initialNews.slice(0, 3);
+  const BACKEND_URL = "http://83.229.84.217:5000";
   return (
     <main className="w-full">
       {/* Hero Section */}
@@ -338,113 +353,103 @@ export default async function Home({
               <div className="flex items-center gap-4">
                 <span className="h-[2px] w-12 bg-white/30"></span>
                 <span className="text-white/60 uppercase tracking-[0.4em] text-xs font-bold">
-                  {t.newsSubtitle}
+                  {t?.newsSubtitle || "XƏBƏRLƏR"}
                 </span>
               </div>
               <h2 className="text-5xl md:text-6xl font-black text-white tracking-tighter">
-                {t.newsTitle}
+                {t?.newsTitle || "Son Yeniliklər"}
               </h2>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
-            {[
-              {
-                // img: ,
-                title:
-                  locale === "az"
-                    ? "Azərbaycan Respublikasının Prezidenti İlham Əliyev yanvarın 27-də Sumqayıt Sənaye..."
-                    : "President of the Republic of Azerbaijan Ilham Aliyev on January 27 at Sumgait Chemical...",
-                desc:
-                  locale === "az"
-                    ? "Bakı Karton və Qutu Fabriki MMC-nin rəhbəri Kamran Salmanlı dövlətimizin başçısına fəaliyyət barədə məlumat verdi."
-                    : "Kamran Salmanlı, head of Baku Cardboard and Box Factory LLC, informed the head of state about the activities.",
-                date: "27.01.2026",
-              },
-              {
-                // img: ,
-                title:
-                  locale === "az"
-                    ? "Karton Qutu İstehsalının Gizli Dünyası: Texnologiya və Dəqiqliyin Vəhdəti"
-                    : "The Hidden World of Cardboard Box Production: Unity of Technology and Precision",
-                desc:
-                  locale === "az"
-                    ? "Gəlin, bu gizli dünyaya birlikdə səyahət edək və bir karton qutunun necə həyata gəldiyini öyrənək."
-                    : "Let's travel together into this secret world and learn how a cardboard box comes to life.",
-                date: "15.02.2026",
-              },
-              {
-                // img: ,
-                title:
-                  locale === "az"
-                    ? "Biznesinizi Dəyişdirən Qablaşdırma: Funksiyadan Daha Artığı"
-                    : "Packaging That Transforms Your Business: More Than Just Function",
-                desc:
-                  locale === "az"
-                    ? "Müştərilər məhsulunuzu ilk dəfə gördükdə, qablaşdırma onlarda bir hiss və ya təəssürat yaradır."
-                    : "When customers see your product for the first time, the packaging creates a feeling or impression in them.",
-                date: "03.03.2026",
-              },
-            ].map((news, index) => (
-              <div
-                key={index}
-                className="group relative flex flex-col h-full bg-[#112240] border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all duration-500 shadow-2xl"
-              >
-                <div className="relative h-72 overflow-hidden">
-                  {/* {news.img ? (
-                    <img
-                      // src={news.img}
-                      alt={news.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-slate-800 animate-pulse" />
-                  )} */}
-                  <div className="absolute top-4 left-4 px-4 py-2 bg-black/40 backdrop-blur-md rounded-lg border border-white/10 shadow-lg">
-                    <span className="text-white text-xs font-bold tracking-wider">
-                      {news.date}
-                    </span>
-                  </div>
-                </div>
+            {latestNews.map((news: any) => {
+              const rawPath = news.image_url || news.image;
+              const imageUrl = rawPath
+                ? rawPath.startsWith("http")
+                  ? rawPath
+                  : `${BACKEND_URL}${rawPath}`
+                : null;
 
-                <div className="p-8 flex flex-col flex-grow space-y-4">
-                  <h3 className="text-xl font-bold text-white leading-tight group-hover:text-blue-400 transition-colors duration-300">
-                    {news.title}
-                  </h3>
-                  <p className="text-slate-400 text-sm leading-relaxed line-clamp-3">
-                    {news.desc}
-                  </p>
-                  <div className="pt-4 mt-auto border-t border-white/5 flex items-center justify-between">
-                    <span className="text-xs font-bold text-white/40 group-hover:text-white transition-colors uppercase tracking-widest">
-                      {t.more}
-                    </span>
-                    <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all duration-500">
-                      <svg
-                        className="w-4 h-4 text-white group-hover:text-[#0a192f] transform group-hover:translate-x-0.5 transition-all"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
+              // Tarix formatı
+              const formattedDate = news.createdAt
+                ? new Date(news.createdAt).toLocaleDateString("az-AZ")
+                : news.date || "";
+
+              return (
+                <Link
+                  key={news.id}
+                  href={`/${locale}/xeberler/${news.id}`}
+                  className="group relative flex flex-col h-full bg-[#112240] border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all duration-500 shadow-2xl block"
+                >
+                  <div className="relative h-72 overflow-hidden bg-slate-800">
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt={news.title || "Xəbər şəkli"}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-500 text-xs italic">
+                        Şəkil yoxdur
+                      </div>
+                    )}
+
+                    {/* Tarix etiketi */}
+                    {formattedDate && (
+                      <div className="absolute top-4 left-4 px-4 py-2 bg-black/40 backdrop-blur-md rounded-lg border border-white/10 shadow-lg">
+                        <span className="text-white text-xs font-bold tracking-wider">
+                          {formattedDate}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-8 flex flex-col flex-grow space-y-4">
+                    <h3 className="text-xl font-bold text-white leading-tight group-hover:text-blue-400 transition-colors duration-300 line-clamp-2">
+                      {news.title}
+                    </h3>
+                    <p className="text-slate-400 text-sm leading-relaxed line-clamp-3">
+                      {news.description}
+                    </p>
+
+                    <div className="pt-4 mt-auto border-t border-white/5 flex items-center justify-between">
+                      <span className="text-xs font-bold text-white/40 group-hover:text-white transition-colors uppercase tracking-widest">
+                        {t?.more || "Ətraflı"}
+                      </span>
+                      <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all duration-500">
+                        <svg
+                          className="w-4 h-4 text-white group-hover:text-[#0a192f] transform group-hover:translate-x-0.5 transition-all"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                </Link>
+              );
+            })}
           </div>
 
+          {/* Bütün xəbərlərə keçid düyməsi */}
           <div className="flex justify-center">
-            <button className="relative group overflow-hidden px-12 py-4 rounded-full border border-white/20 text-white font-bold tracking-widest uppercase text-xs transition-all duration-500 hover:border-white">
-              <span className="relative z-10 text-black">{t.allNewsBtn}</span>
+            <Link
+              href={`/${locale}/xeberler`}
+              className="relative group overflow-hidden px-12 py-4 rounded-full border border-white/20 text-white font-bold tracking-widest uppercase text-xs transition-all duration-500 hover:border-white inline-block text-center"
+            >
+              <span className="relative z-10 group-hover:text-[#0a192f] transition-colors duration-500">
+                {t?.allNewsBtn || "Bütün Xəbərlər"}
+              </span>
               <div className="absolute inset-0 bg-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
-              <span className="absolute inset-0 z-0 bg-white group-hover:text-[#0a192f]"></span>
-            </button>
+            </Link>
           </div>
         </div>
       </section>
