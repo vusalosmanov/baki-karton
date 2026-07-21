@@ -27,7 +27,7 @@ export async function generateMetadata({
       : (m.title || (locale === "en" ? "Baku Cardboard Factory" : "Bakı Karton Fabrikası")),
     description: m.description || (locale === "en" ? "Azerbaijan's largest cardboard packaging manufacturer" : "Azərbaycanın ən böyük karton qablaşdırma istehsalçısı"),
     icons: {
-      icon: "/favicon.ico", // Defolt ikon qaldı
+      icon: "/public/images/about/Baki karton fav.png",
     },
   };
 }
