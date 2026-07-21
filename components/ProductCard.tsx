@@ -11,7 +11,7 @@ export default function ProductCard({
   const imageUrl = image
     ? image.startsWith("http")
       ? image
-      : `http://83.229.84.217:5000${image}`
+      : `https://bakikarton.az${image}`
     : "/placeholder.png";
 
   // Brauzer HTTPS-də işləyirsə, HTTP linkini avtomatik HTTPS-ə çeviririk:
