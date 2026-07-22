@@ -21,7 +21,7 @@ export default function ProductDetails({
         ? image.replace("http://", "https://")
         : image;
     }
-    return `http://83.229.84.217:5000${image.startsWith("/") ? image : `/${image}`}`;
+    return `http://bakikarton.az${image.startsWith("/") ? image : `/${image}`}`;
   };
 
   const validImages = allImages && allImages.length > 0 ? allImages.filter(Boolean) : [mehsul?.image_url].filter(Boolean);
