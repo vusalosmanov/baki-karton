@@ -23,17 +23,19 @@ export default async function ProductsPage({
 
   return (
     <main className="min-h-screen bg-white">
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-gray-900">
-        <div className="relative z-20 text-center px-6">
-          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter">
+      {/* Hero Banner */}
+      <section className="relative h-[45vh] md:h-[60vh] flex items-center justify-center overflow-hidden bg-gray-900 py-12">
+        <div className="relative z-20 text-center px-4 sm:px-6">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter">
             Məhsul <span className="text-blue-400">Kataloqumuz</span>
           </h1>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 py-24">
+      {/* Məhsullar Siyahısı */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-24">
         {mehsullar && mehsullar.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-12">
             {mehsullar.map((item: any, index: number) => (
               <ProductCard
                 key={item.id}
@@ -48,7 +50,7 @@ export default async function ProductsPage({
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 text-gray-400">
+          <div className="text-center py-20 text-gray-400 text-sm sm:text-base">
             Məhsul tapılmadı.
           </div>
         )}

@@ -26,14 +26,21 @@ export default async function SingleProductPage({
 
   if (!mehsul) return notFound();
 
-  // Şəkil məntiqi: 'image_url' sütununu yoxlayırıq
-  const allImages = [];
+  // Bütün şəkilləri (əsas şəkil + əlavə nümunə şəkilləri) toplayırıq
+  const allImages: string[] = [];
+  
   if (mehsul.image_url) {
     allImages.push(mehsul.image_url);
   }
-  
-  // Əgər bazada başqa şəkillər də varsa və onlar ayrıca massivdirsə, 
-  // onları da əlavə edə bilərsən, amma hazırda sadəcə image_url-i götürürük.
 
+  // Variantlardakı/əlavə şəkillərdəki nümunələri əlavə edirik
+  if (mehsul.product_variants && Array.isArray(mehsul.product_variants)) {
+    mehsul.product_variants.forEach((variant: any) => {
+      if (variant.image_url && !allImages.includes(variant.image_url)) {
+        allImages.push(variant.image_url);
+      }
+    });
+  }
+  
   return <ProductDetails mehsul={mehsul} allImages={allImages} locale={locale} />;
 }

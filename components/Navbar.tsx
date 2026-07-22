@@ -60,7 +60,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
         <div className="flex-shrink-0">
           <Link href={`/${locale}`}>
             <img 
-              src="/images/brand/baku-krt-lg.png" // Fayl yolunu öz loqona uyğun dəyiş
+              src="/images/brand/baku-krt-lg.png" 
               alt="Bakı Karton" 
               className="h-12 md:h-16 w-auto object-contain" 
             />
@@ -127,10 +127,25 @@ export default function Navbar({ locale, dict }: NavbarProps) {
             <div key={link.href}>
               {link.hasDropdown ? (
                 <div>
-                  <button onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)} className="w-full flex items-center justify-between py-3 text-lg font-semibold text-[#1a2e35]">
-                    <span>{link.label}</span>
-                    <svg className={`w-5 h-5 transition-transform duration-200 ${isMobileDropdownOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                  </button>
+                  <div className="flex items-center justify-between py-3 border-b border-gray-50">
+                    {/* Yazının üzərinə basanda birbaşa məhsullar səhifəsinə gedir və menyunu bağlayır */}
+                    <Link 
+                      href={link.href} 
+                      onClick={() => setIsMobileMenuOpen(false)} 
+                      className="text-lg font-semibold text-[#1a2e35] hover:text-red-600 flex-1"
+                    >
+                      {link.label}
+                    </Link>
+                    {/* Ox işarəsinə basanda yalnız alt menyu açılır/bağlanır */}
+                    <button 
+                      onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)} 
+                      className="p-2 text-[#1a2e35] hover:text-red-600"
+                    >
+                      <svg className={`w-5 h-5 transition-transform duration-200 ${isMobileDropdownOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  </div>
                   <div className={`pl-4 space-y-2 overflow-hidden transition-all duration-300 ${isMobileDropdownOpen ? "max-h-40 opacity-100 mt-2" : "max-h-0 opacity-0"}`}>
                     {link.dropdownItems?.map((subLink) => (
                       <Link key={subLink.href} href={subLink.href} onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-base font-medium text-gray-600 hover:text-red-600">
@@ -140,10 +155,28 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                   </div>
                 </div>
               ) : (
-                <Link href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="block py-3 text-lg font-semibold text-[#1a2e35] hover:text-red-600">{link.label}</Link>
+                <Link href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="block py-3 text-lg font-semibold text-[#1a2e35] hover:text-red-600 border-b border-gray-50">{link.label}</Link>
               )}
             </div>
           ))}
+
+          {/* Mobil üçün Dil Seçimi */}
+          <div className="pt-6 mt-auto border-t border-gray-100 flex items-center justify-center space-x-6">
+            <Link 
+              href={getLanguageLink("az")} 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`font-bold text-base px-4 py-2 rounded-lg ${locale === "az" ? "bg-red-600 text-white" : "bg-gray-100 text-gray-700"}`}
+            >
+              AZ
+            </Link>
+            <Link 
+              href={getLanguageLink("en")} 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`font-bold text-base px-4 py-2 rounded-lg ${locale === "en" ? "bg-red-600 text-white" : "bg-gray-100 text-gray-700"}`}
+            >
+              EN
+            </Link>
+          </div>
         </div>
       </div>
     </header>
