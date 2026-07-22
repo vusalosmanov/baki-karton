@@ -57,13 +57,48 @@ export default function ServicesClient({ dict }: { dict: any }) {
     const [activeServiceId, setActiveServiceId] = useState(servicesData[0].id);
     const activeService = servicesData.find(service => service.id === activeServiceId) || servicesData[0];
 
+    // Modal və Forma üçün state-lər
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [formData, setFormData] = useState({ name: '', phone: '', email: '', message: '' });
+    const [loading, setLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState(false);
+
+    const handleSubmitOrder = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const res = await fetch('/api/send-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...formData,
+                    serviceName: activeService.title,
+                }),
+            });
+
+            if (res.ok) {
+                setSuccessMessage(true);
+                setFormData({ name: '', phone: '', email: '', message: '' });
+                setTimeout(() => {
+                    setSuccessMessage(false);
+                    setIsModalOpen(false);
+                }, 3000);
+            }
+        } catch (error) {
+            console.error('Xəta:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <main className="min-h-screen bg-white">
             {/* Hero Section */}
             <section className="relative min-h-[70vh] md:h-[91vh] flex items-center overflow-hidden bg-[#004a99] py-20 md:py-0">
                 <div className="absolute inset-0 z-0">
                     <div className="absolute -left-[10%] -top-[20%] w-[60%] h-[140%] bg-blue-400/20 rounded-full blur-[120px] animate-pulse"></div>
-                    <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}></div>
+                    <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4H-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}></div>
                 </div>
                 <div className="relative z-20 max-w-[1700px] mx-auto w-full px-4 sm:px-6 md:px-10">
                     <div className="max-w-4xl space-y-6 md:space-y-10">
@@ -131,7 +166,10 @@ export default function ServicesClient({ dict }: { dict: any }) {
                                     {activeService.fullDesc}
                                 </div>
                                 <div className="pt-4 sm:pt-8">
-                                    <button className="w-full sm:w-auto group flex items-center justify-center gap-4 sm:gap-6 px-8 sm:px-12 py-5 sm:py-6 bg-[#004a99] text-white rounded-2xl sm:rounded-full font-black uppercase tracking-widest text-xs hover:bg-[#003d80] transition-all shadow-xl shadow-blue-900/20">
+                                    <button 
+                                        onClick={() => setIsModalOpen(true)}
+                                        className="w-full sm:w-auto group flex items-center justify-center gap-4 sm:gap-6 px-8 sm:px-12 py-5 sm:py-6 bg-[#004a99] text-white rounded-2xl sm:rounded-full font-black uppercase tracking-widest text-xs hover:bg-[#003d80] transition-all shadow-xl shadow-blue-900/20"
+                                    >
                                         {dict.applyBtn}
                                         <svg className="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -144,6 +182,89 @@ export default function ServicesClient({ dict }: { dict: any }) {
                     </div>
                 </div>
             </section>
+
+            {/* Sifariş / Müraciət Modalı (Forma) */}
+            {isModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                    <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-10 shadow-2xl relative animate-in fade-in zoom-in duration-300">
+                        <button 
+                            onClick={() => setIsModalOpen(false)}
+                            className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 bg-slate-100 p-2 rounded-full transition-colors"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        <div className="mb-6">
+                            <span className="text-xs font-bold text-[#004a99] uppercase tracking-widest">Sifariş Formu</span>
+                            <h3 className="text-2xl font-black text-slate-900 mt-1">{activeService.title}</h3>
+                        </div>
+
+                        {successMessage ? (
+                            <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-6 rounded-2xl text-center space-y-2">
+                                <svg className="w-12 h-12 text-emerald-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <h4 className="font-bold text-lg">Müraciətiniz göndərildi!</h4>
+                                <p className="text-sm text-emerald-600">Tezliklə sizinlə əlaqə saxlanılacaqdır.</p>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubmitOrder} className="space-y-4">
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Ad Soyad *</label>
+                                    <input 
+                                        type="text" 
+                                        required
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#004a99] text-slate-800 text-sm"
+                                        placeholder="Adınızı daxil edin"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Əlaqə Nömrəsi *</label>
+                                    <input 
+                                        type="tel" 
+                                        required
+                                        value={formData.phone}
+                                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#004a99] text-slate-800 text-sm"
+                                        placeholder="+994 XX XXX XX XX"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">E-poçt (İstəyə bağlı)</label>
+                                    <input 
+                                        type="email" 
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#004a99] text-slate-800 text-sm"
+                                        placeholder="ornek@mail.com"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Qeyd və ya Tələblər</label>
+                                    <textarea 
+                                        rows={3}
+                                        value={formData.message}
+                                        onChange={(e) => setFormData({...formData, message: e.target.value})}
+                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#004a99] text-slate-800 text-sm resize-none"
+                                        placeholder="Əlavə məlumat..."
+                                    />
+                                </div>
+                                <button 
+                                    type="submit" 
+                                    disabled={loading}
+                                    className="w-full py-4 bg-[#004a99] text-white rounded-xl font-black uppercase tracking-widest text-xs hover:bg-[#003d80] transition-all shadow-lg shadow-blue-900/20 disabled:opacity-50"
+                                >
+                                    {loading ? 'Göndərilir...' : 'Sifarişi Təsdiq Et'}
+                                </button>
+                            </form>
+                        )}
+                    </div>
+                </div>
+            )}
         </main>
     );
 }

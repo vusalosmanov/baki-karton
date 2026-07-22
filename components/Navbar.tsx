@@ -27,16 +27,16 @@ export default function Navbar({ locale, dict }: NavbarProps) {
   const pathname = usePathname();
   const n = dict?.navigation || {};
 
-  const navLinks: NavLink[] = [
+const navLinks: NavLink[] = [
     { href: `/${locale}/haqqimizda`, label: n.about || "Haqqımızda" },
     { 
       href: `/${locale}/mehsullar`, 
       label: n.products || "Məhsullar",
       hasDropdown: true,
       dropdownItems: [
-        { href: `/${locale}/mehsullar/karton-qutu`, label: n.box || "Karton Qutu" },
-        { href: `/${locale}/mehsullar/karton-list`, label: n.sheet || "Karton List" },
-        { href: `/${locale}/mehsullar/karton-tava`, label: n.tray || "Karton Tava" }
+        { href: `/${locale}/mehsullar/3`, label: n.box || "Karton Qutu" },
+        { href: `/${locale}/mehsullar/1`, label: n.sheet || "Karton List" },
+        { href: `/${locale}/mehsullar/2`, label: n.tray || "Karton Tava" }
       ]
     },
     { href: `/${locale}/xidmetler`, label: n.services || "Xidmətlər" },

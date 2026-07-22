@@ -14,6 +14,7 @@ export default function ProductDetails({
   // Seçilmiş aktiv şəkli idarə etmək üçün state
   const [selectedImage, setSelectedImage] = useState(allImages[0] || mehsul?.image_url);
 
+  // Şəkil yolunu düzgün formaya salan funksiya
   const getImageUrl = (image: string) => {
     if (!image) return "https://via.placeholder.com/600x600?text=Baki+Karton";
     if (image.startsWith("http://") || image.startsWith("https://")) {
@@ -21,7 +22,7 @@ export default function ProductDetails({
         ? image.replace("http://", "https://")
         : image;
     }
-    return `http://bakikarton.az${image.startsWith("/") ? image : `/${image}`}`;
+    return `https://bakikarton.az${image.startsWith("/") ? image : `/${image}`}`;
   };
 
   const validImages = allImages && allImages.length > 0 ? allImages.filter(Boolean) : [mehsul?.image_url].filter(Boolean);
@@ -39,7 +40,7 @@ export default function ProductDetails({
 
         <div className="flex flex-col lg:grid lg:grid-cols-12 gap-10 lg:gap-16">
           
-          {/* SOL TƏRƏF: Böyük Şəkil və Aşağıda 5-10 Nümunə Şəkil (Qalereya) */}
+          {/* SOL TƏRƏF: Böyük Şəkil və Qalereya */}
           <div className="lg:col-span-7 space-y-6">
             <div className="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
               <div className="aspect-[4/3] sm:aspect-square overflow-hidden rounded-2xl bg-slate-50 relative flex items-center justify-center">
@@ -51,7 +52,7 @@ export default function ProductDetails({
               </div>
             </div>
 
-            {/* Nümunə Şəkillərin Grid Siyahısı (5-10 ədəd) */}
+            {/* Kiçik Şəkillərin Grid Siyahısı (Qalereya) */}
             {validImages.length > 1 && (
               <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                 {validImages.map((img: string, i: number) => (

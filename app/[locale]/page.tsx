@@ -6,7 +6,7 @@ import Link from "next/link";
 async function getNews() {
   try {
     const res = await fetch("http://83.229.84.217:5000/api/news", {
-      cache: "no-store", // Həmişə ən təzə məlumatı çəkmək üçün
+      cache: "no-store",
     });
     if (!res.ok) return [];
     return await res.json();
@@ -32,13 +32,14 @@ export default async function Home({
   const initialNews = await getNews();
   const latestNews = initialNews.slice(0, 3);
   const BACKEND_URL = "http://83.229.84.217:5000";
+
   return (
     <main className="w-full">
       {/* Hero Section */}
       <section className="relative w-full h-[calc(100vh-80px)] min-h-[500px] overflow-hidden bg-gray-900">
         <div className="absolute inset-0 w-full h-full">
           <img
-            src="/images/haqqimizda/Baki karton-ust.jpg" // Buranı öz şəkil yolunla dəyiş
+            src="/images/haqqimizda/Baki karton-ust.jpg"
             alt="Bakı Karton İstehsalat"
             className="w-full h-full object-cover opacity-80"
           />
@@ -71,6 +72,7 @@ export default async function Home({
           </div>
         </div>
       </section>
+
       <AboutSection dict={dict} />
 
       {/* Dayanıqlılıq Bölməsi */}
@@ -150,7 +152,7 @@ export default async function Home({
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth="1.5"
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2v0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                     />
                   </svg>
                 </div>
@@ -232,9 +234,9 @@ export default async function Home({
                 </span>
               </div>
               <h2 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight">
-                {t.productGroups.split(" ")[0]}{" "}
+                {t.productGroups?.split(" ")[0] || ""}{" "}
                 <span className="text-[#004a99]">
-                  {t.productGroups.split(" ")[1] || ""}
+                  {t.productGroups?.split(" ")[1] || ""}
                 </span>
               </h2>
             </div>
@@ -254,7 +256,6 @@ export default async function Home({
                     {t.boxTitle}
                   </h3>
 
-                  {/* Linki birbaşa bura verdik */}
                   <Link
                     href={`/${locale}/mehsullar/karton-qutu`}
                     className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-[#004a99] group-hover:border-[#004a99] transition-all duration-500"
@@ -275,16 +276,13 @@ export default async function Home({
                   </Link>
                 </div>
 
-                {/* Şəkil və Gradient hissəsi */}
                 <div className="relative h-[500px] overflow-hidden rounded-xl shadow-xl border border-slate-100">
-                  {/* Şəkil buraya əlavə olundu */}
                   <img
-                    src="/images/about/Karton-qutu.jpg" // Şəkil yolunu bura qoy
+                    src="/images/about/Karton-qutu.jpg"
                     alt={t.boxTitle}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
 
-                  {/* Hover zamanı çıxan yazı və gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#004a99]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10">
                     <span className="text-white/70 text-sm uppercase tracking-widest mb-2">
                       {t.production}
@@ -326,7 +324,7 @@ export default async function Home({
 
                 <div className="relative h-[500px] overflow-hidden rounded-xl shadow-xl border border-slate-100">
                   <img
-                    src="/images/brand/karton-list.jpg" // Şəkil yolunu bura qoy
+                    src="/images/brand/karton-list.jpg"
                     alt={t.listTitle}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
@@ -373,7 +371,7 @@ export default async function Home({
                     )
                   : `https://bakikarton.az${rawPath}`
                 : null;
-              // Tarix formatı
+
               const formattedDate = news.createdAt
                 ? new Date(news.createdAt).toLocaleDateString("az-AZ")
                 : news.date || "";
@@ -397,7 +395,6 @@ export default async function Home({
                       </div>
                     )}
 
-                    {/* Tarix etiketi */}
                     {formattedDate && (
                       <div className="absolute top-4 left-4 px-4 py-2 bg-black/40 backdrop-blur-md rounded-lg border border-white/10 shadow-lg">
                         <span className="text-white text-xs font-bold tracking-wider">
@@ -441,7 +438,6 @@ export default async function Home({
             })}
           </div>
 
-          {/* Bütün xəbərlərə keçid düyməsi */}
           <div className="flex justify-center">
             <Link
               href={`/${locale}/xeberler`}
