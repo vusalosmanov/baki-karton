@@ -13,6 +13,10 @@ export default function KaryeraPage({ dict }: KaryeraPageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedFileName, setSelectedFileName] = useState("");
+  
+  // Xidmətlər səhifəsindəki kimi daxili uğur mesajı üçün state
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (isModalOpen) {
@@ -42,18 +46,8 @@ export default function KaryeraPage({ dict }: KaryeraPageProps) {
         </>
       ),
       icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1.5"
-            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-          />
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
         </svg>
       ),
     },
@@ -67,60 +61,38 @@ export default function KaryeraPage({ dict }: KaryeraPageProps) {
           <br />
           <br />
           {t.education.descPart2}{" "}
-          <span className="font-bold text-slate-800">
-            {t.education.academyName}
-          </span>
+          <span className="font-bold text-slate-800">{t.education.academyName}</span>
           {t.education.descPart3}
           <br />
           <br />
           {t.education.descPart4}{" "}
-          <span className="font-bold text-slate-800">
-            {t.education.training1}
-          </span>
-          ,{" "}
-          <span className="font-bold text-slate-800">
-            {t.education.training2}
-          </span>{" "}
+          <span className="font-bold text-slate-800">{t.education.training1}</span>,{" "}
+          <span className="font-bold text-slate-800">{t.education.training2}</span>{" "}
           {t.education.training3}{" "}
-          <span className="font-bold text-slate-800">
-            {t.education.training4}
-          </span>{" "}
+          <span className="font-bold text-slate-800">{t.education.training4}</span>{" "}
           {t.education.descPart5}
         </>
       ),
       icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1.5"
-            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-          />
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
         </svg>
       ),
     },
   ];
 
-  const activeCareer =
-    careerData.find((item) => item.id === activeCareerId) || careerData[0];
+  const activeCareer = careerData.find((item) => item.id === activeCareerId) || careerData[0];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMessage("");
 
     const form = e.currentTarget;
 
     try {
-      const fullnameVal = (
-        form.elements.namedItem("fullname") as HTMLInputElement
-      ).value;
-      const emailVal = (form.elements.namedItem("email") as HTMLInputElement)
-        .value;
+      const fullnameVal = (form.elements.namedItem("fullname") as HTMLInputElement).value;
+      const emailVal = (form.elements.namedItem("email") as HTMLInputElement).value;
       const fileInput = form.elements.namedItem("cv") as HTMLInputElement;
       const file = fileInput.files?.[0] || null;
 
@@ -144,28 +116,30 @@ export default function KaryeraPage({ dict }: KaryeraPageProps) {
       const result = await res.json();
 
       if (result.success) {
-        alert(t.form.success);
-        setIsModalOpen(false);
+        setSuccessMessage(true);
         form.reset();
         setSelectedFileName("");
+        setTimeout(() => {
+          setSuccessMessage(false);
+          setIsModalOpen(false);
+        }, 3000);
       } else {
-        alert(`Xəta: ${result.error}`);
+        setErrorMessage(result.error || "Göndərilə bilmədi");
       }
     } catch (err) {
       console.error("Xəta baş verdi:", err);
-      alert("Sistemdə gözlənilməz xəta baş verdi.");
+      setErrorMessage("Sistemdə gözlənilməz xəta baş verdi.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white relative">
       {/* Hero Banner */}
       <section className="relative min-h-[70vh] md:h-[91vh] flex items-center overflow-hidden bg-[#004a99] py-20 md:py-0">
         <div className="absolute inset-0 z-0">
           <div className="absolute -left-[10%] -top-[20%] w-[60%] h-[140%] bg-blue-400/20 rounded-full blur-[120px] animate-pulse"></div>
-          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}></div>
         </div>
         <div className="relative z-20 max-w-[1700px] mx-auto w-full px-4 sm:px-6 md:px-10">
           <div className="max-w-4xl space-y-6 md:space-y-10">
@@ -257,7 +231,11 @@ export default function KaryeraPage({ dict }: KaryeraPageProps) {
                     Bizimlə gələcəyini qurmağa başla.
                   </p>
                   <button
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => {
+                      setSuccessMessage(false);
+                      setErrorMessage("");
+                      setIsModalOpen(true);
+                    }}
                     className="w-full sm:w-auto group flex items-center justify-center gap-4 sm:gap-6 px-8 sm:px-12 py-5 sm:py-6 bg-[#004a99] text-white rounded-2xl sm:rounded-full font-black uppercase tracking-widest text-xs hover:bg-[#003d80] transition-all shadow-xl shadow-blue-900/20 cursor-pointer"
                   >
                     CV {t.form.sendBtn}
@@ -273,103 +251,106 @@ export default function KaryeraPage({ dict }: KaryeraPageProps) {
         </div>
       </section>
 
-      {/* Modal Popup */}
+      {/* Modal Popup (Xidmətlər səhifəsindəki dizayn strukturunda) */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
-          <div className="bg-white w-full max-w-md rounded-2xl sm:rounded-[2rem] md:rounded-[2.5rem] p-5 sm:p-8 md:p-10 shadow-2xl relative my-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-10 shadow-2xl relative animate-in fade-in zoom-in duration-300">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-4 sm:top-5 sm:right-5 text-slate-400 hover:text-slate-900 transition-colors cursor-pointer"
+              className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 bg-slate-100 p-2 rounded-full transition-colors cursor-pointer"
             >
-              <svg
-                className="w-5 h-5 sm:w-6 sm:h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
-            <h3 className="text-lg sm:text-xl md:text-2xl font-black text-slate-900 mb-1 uppercase tracking-tight">
-              {t.form.title}
-            </h3>
-            <p className="text-slate-500 text-xs sm:text-sm mb-5 sm:mb-6">
-              {t.form.desc}
-            </p>
+            <div className="mb-6">
+              <span className="text-xs font-bold text-[#004a99] uppercase tracking-widest">Karyera Müraciəti</span>
+              <h3 className="text-2xl font-black text-slate-900 mt-1">{activeCareer.title}</h3>
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
-              <div>
-                <label className="block text-[9px] md:text-[10px] font-black uppercase text-[#004a99] tracking-widest mb-1 ml-1">
-                  {t.form.nameLabel}
-                </label>
-                <input
-                  name="fullname"
-                  required
-                  type="text"
-                  placeholder="Ad Soyad"
-                  className="w-full px-4 py-3 sm:px-5 sm:py-3.5 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl focus:border-[#004a99] focus:outline-none transition-all text-xs sm:text-sm"
-                />
+            {successMessage ? (
+              <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-6 rounded-2xl text-center space-y-2">
+                <svg className="w-12 h-12 text-emerald-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <h4 className="font-bold text-lg">Müraciətiniz göndərildi!</h4>
+                <p className="text-sm text-emerald-600">Tezliklə sizinlə əlaqə saxlanılacaqdır.</p>
               </div>
-              <div>
-                <label className="block text-[9px] md:text-[10px] font-black uppercase text-[#004a99] tracking-widest mb-1 ml-1">
-                  {t.form.emailLabel}
-                </label>
-                <input
-                  name="email"
-                  required
-                  type="email"
-                  placeholder="email@example.com"
-                  className="w-full px-4 py-3 sm:px-5 sm:py-3.5 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl focus:border-[#004a99] focus:outline-none transition-all text-xs sm:text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-[9px] md:text-[10px] font-black uppercase text-[#004a99] tracking-widest mb-1 ml-1">
-                  {t.form.cvLabel}
-                </label>
-                <div className="relative h-16 sm:h-20 group">
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {errorMessage && (
+                  <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3 rounded-xl text-xs font-semibold">
+                    {errorMessage}
+                  </div>
+                )}
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">{t.form.nameLabel} *</label>
                   <input
-                    name="cv"
+                    name="fullname"
                     required
-                    type="file"
-                    accept=".pdf,.doc,.docx"
-                    onChange={(e) =>
-                      setSelectedFileName(e.target.files?.[0]?.name || "")
-                    }
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                    type="text"
+                    placeholder="Ad Soyad"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#004a99] text-slate-800 text-sm"
                   />
-                  <div
-                    className={`absolute inset-0 w-full h-full border-2 border-dashed rounded-xl md:rounded-2xl flex flex-col items-center justify-center pointer-events-none z-10 transition-all ${
-                      selectedFileName
-                        ? "border-green-500 bg-green-50/30"
-                        : "border-slate-200 bg-slate-50 group-hover:border-[#004a99]"
-                    }`}
-                  >
-                    <span className="text-xs text-slate-400 font-bold px-3 text-center line-clamp-1">
-                      {selectedFileName
-                        ? `✅ ${selectedFileName}`
-                        : "Seçmək üçün klikləyin"}
-                    </span>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">{t.form.emailLabel} *</label>
+                  <input
+                    name="email"
+                    required
+                    type="email"
+                    placeholder="email@example.com"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#004a99] text-slate-800 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">{t.form.cvLabel} *</label>
+                  <div className="relative h-20 group">
+                    <input
+                      name="cv"
+                      required
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={(e) =>
+                        setSelectedFileName(e.target.files?.[0]?.name || "")
+                      }
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                    />
+                    <div
+                      className={`absolute inset-0 w-full h-full border-2 border-dashed rounded-xl flex flex-col items-center justify-center pointer-events-none z-10 transition-all ${
+                        selectedFileName
+                          ? "border-emerald-500 bg-emerald-50/30"
+                          : "border-slate-200 bg-slate-50 group-hover:border-[#004a99]"
+                      }`}
+                    >
+                      <span className="text-xs text-slate-500 font-bold px-3 text-center line-clamp-1">
+                        {selectedFileName
+                          ? `✅ ${selectedFileName}`
+                          : "Seçmək üçün klikləyin (.pdf, .doc)"}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`w-full py-3.5 sm:py-4 bg-[#004a99] text-white rounded-xl md:rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-xs transition-all cursor-pointer ${
-                  isSubmitting
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-[#003d80]"
-                }`}
-              >
-                {isSubmitting ? t.form.sending : t.form.sendBtn}
-              </button>
-            </form>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-4 bg-[#004a99] text-white rounded-xl font-black uppercase tracking-widest text-xs hover:bg-[#003d80] transition-all shadow-lg shadow-blue-900/20 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Göndərilir...
+                    </>
+                  ) : (
+                    t.form.sendBtn
+                  )}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       )}
