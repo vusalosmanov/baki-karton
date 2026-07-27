@@ -8,10 +8,12 @@ async function getNewsById(id: string) {
     });
 
     if (!res.ok) {
+      console.error(`API Error: ${res.status} for ID: ${id}`);
       return null;
     }
-    return res.json();
+    return await res.json();
   } catch (error) {
+    console.error("Fetch error for single news:", error);
     return null;
   }
 }
@@ -21,29 +23,30 @@ export default async function SingleNewsPage({
 }: {
   params: Promise<{ locale: string; id: string }>;
 }) {
-  const { locale, id } = await params;
+  // Next.js 15 üçün params-ı mütləq await etmək lazımdır
+  const resolvedParams = await params;
+  const locale = resolvedParams.locale;
+  const id = resolvedParams.id;
+
   const news = await getNewsById(id);
 
   if (!news) {
     notFound();
   }
 
-  // JSON-da 'image_url' və ya 'image' ola biləcəyini nəzərə alırıq
   const rawPath = news.image_url || news.image;
   const imageUrl = rawPath
     ? rawPath.startsWith("http")
       ? rawPath.replace("http://83.229.84.217:5000", "https://bakikarton.az")
       : `https://bakikarton.az${rawPath}`
     : "/placeholder.jpg";
+
   return (
     <main className="min-h-screen bg-white pb-24">
-      
       <article className="max-w-5xl mx-auto px-6">
         <header className="pt-16 pb-12 md:pt-24 md:pb-16 border-b border-gray-100">
           <div className="flex items-center gap-3 mb-6">
-            <span className="w-8 h-[1px] bg-[#00509D]">
-              
-            </span>
+            <span className="w-8 h-[1px] bg-[#00509D]"></span>
             <span className="text-[#00509D] text-xs font-bold uppercase tracking-widest">
               {news.category || "Sənaye"}
             </span>
@@ -79,12 +82,10 @@ export default async function SingleNewsPage({
         <div className="max-w-3xl mx-auto py-8">
           {news.content && (
             <div className="space-y-8">
-              {/* Giriş hissəsi */}
               <p className="text-xl md:text-2xl text-gray-900 font-semibold leading-relaxed pl-6 border-l-4 border-[#00509D]">
                 {news.content.split("\n")[0]}
               </p>
 
-              {/* Qalan abzaslar - Daha canlı rəng və səliqəli məsafə ilə */}
               {news.content
                 .split("\n")
                 .slice(1)
@@ -104,7 +105,8 @@ export default async function SingleNewsPage({
             </div>
           )}
         </div>
-       <footer className="max-w-3xl mx-auto mt-20 pt-12 border-t border-gray-100 flex items-center justify-between">
+
+        <footer className="max-w-3xl mx-auto mt-20 pt-12 border-t border-gray-100 flex items-center justify-between">
           <Link
             href={`/${locale}/xeberler`}
             className="group inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-gray-50 hover:bg-[#00509D]/5 border border-gray-200/80 hover:border-[#00509D]/30 text-gray-700 hover:text-[#00509D] font-semibold text-sm transition-all duration-300 shadow-sm hover:shadow"

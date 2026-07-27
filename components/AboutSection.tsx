@@ -26,7 +26,7 @@ export default function AboutSection({ dict }: AboutProps) {
               {/* Əsas şəkil qutusu */}
               <div className="relative overflow-hidden rounded-lg shadow-2xl bg-white border border-slate-200 z-10">
                 <img
-                  src="/images/about/Karton-qutu.jpg"
+                  src="/images/about/BK-Qutu.jpg"
                   alt="Bakı Karton İstehsalat Prosesi"
                   className="w-full h-[300px] sm:h-[400px] md:h-[450px] object-cover transform hover:scale-105 transition-transform duration-700 ease-in-out"
                 />

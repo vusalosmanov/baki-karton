@@ -324,7 +324,7 @@ export default async function Home({
 
                 <div className="relative h-[500px] overflow-hidden rounded-xl shadow-xl border border-slate-100">
                   <img
-                    src="/images/brand/karton-list.jpg"
+                    src="/images/brand/Karton-list.jpeg"
                     alt={t.listTitle}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />

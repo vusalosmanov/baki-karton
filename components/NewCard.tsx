@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 interface NewsCardProps {
-  id: number  | string;
+  id: number | string;
   title?: string;
   image?: string | null;
   date?: string;
@@ -32,6 +32,8 @@ export default function NewsCard({
   const trimmedCategory = category?.trim() || "";
   const categoryBgColor = getCategoryColor(trimmedCategory);
 
+  const formattedDate = date ? date.split("T")[0] : "";
+
   return (
     <Link href={`/${locale}/xeberler/${id}`} className="h-full block">
       <div className="group flex flex-col bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-500 h-full">
@@ -60,8 +62,11 @@ export default function NewsCard({
 
         {/* 2. Mətn və Məlumat Bölümü */}
         <div className="p-6 flex flex-col flex-grow space-y-3">
-          {date && (
-            <div className="flex items-center text-gray-400 text-[11px] font-medium italic">
+          {formattedDate && (
+            <div 
+              className="flex items-center text-gray-400 text-[11px] font-medium italic"
+              suppressHydrationWarning
+            >
               <svg
                 className="w-3.5 h-3.5 mr-1.5"
                 fill="none"
@@ -75,7 +80,7 @@ export default function NewsCard({
                   d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
-              {date}
+              {formattedDate}
             </div>
           )}
 
