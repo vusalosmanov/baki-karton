@@ -60,9 +60,9 @@ const navLinks: NavLink[] = [
         <div className="flex-shrink-0">
           <Link href={`/${locale}`}>
             <img 
-              src="/images/brand/baku-krt-lg.png" 
+              src="/images/brand/Logo-BK.png" 
               alt="Bakı Karton" 
-              className="h-12 md:h-16 w-auto object-contain" 
+              className="h-13 md:h-18 w-auto object-contain" 
             />
           </Link>
         </div>
