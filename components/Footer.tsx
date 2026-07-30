@@ -28,7 +28,7 @@ export default function Footer({ locale, dict }: FooterProps) {
           <div className="space-y-8">
             <div className="flex items-center gap-2">
               <img
-                src="/images/brand/baku-krt-lg.png" 
+                src="/images/brand/Logo-BK.png" 
                 alt="Bakı Karton Logo"
                 className="h-12 w-auto object-contain"
               />
