@@ -65,9 +65,12 @@ export default async function Home({
             </p>
 
             <div className="mt-10">
-              <button className="bg-red-600 hover:bg-red-700 text-white px-10 py-4 font-bold uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-xl">
+              <Link
+                 href={`/${locale}/mehsullar`}
+                className="inline-block bg-red-600 hover:bg-red-700 text-white px-10 py-4 font-bold uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-xl text-center"
+              >
                 {t.discoverBtn}
-              </button>
+              </Link>
             </div>
           </div>
         </div>

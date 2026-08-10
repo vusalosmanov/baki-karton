@@ -76,6 +76,12 @@ export default function Footer({ locale, dict }: FooterProps) {
                     info@bakikarton.az
                   </a>
                 </div>
+                  <div className="group">
+                  <p className="text-[10px] font-black text-[#004a99] uppercase mb-1">{f.email || "Linkedin"}</p>
+                  <a href="https://www.linkedin.com/company/baki-karton-v%C9%99-qutu-fabriki/?viewAsMember=true" className="text-lg font-bold text-slate-800 group-hover:text-[#004a99] transition-colors">
+                      Baki Karton LinkedIn
+                  </a>
+                </div>
               </div>
 
               <div className="space-y-4">
