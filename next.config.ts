@@ -21,6 +21,15 @@ const nextconfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/az',
+        permanent: true, // Axtarış sistemləri (SEO) üçün daimi yönləndirmə
+      },
+    ];
+  },
 };
 
 export default nextconfig;
