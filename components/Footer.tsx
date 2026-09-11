@@ -67,9 +67,9 @@ export default function Footer({ locale, dict }: FooterProps) {
                 <div className="group">
                   <p className="text-[10px] font-black text-[#004a99] uppercase mb-1">{f.phone || "Telefon"}</p>
                   <a href="tel:+994103182222" className="text-lg font-bold text-slate-800 group-hover:text-[#004a99] transition-colors">
-                    +994 (10) 318 22 22
+                    +994 (992) 19 08 06
                   </a>
-                </div>
+                  </div>
                 <div className="group">
                   <p className="text-[10px] font-black text-[#004a99] uppercase mb-1">{f.email || "E-poçt"}</p>
                   <a href="mailto:info@bakikarton.az" className="text-lg font-bold text-slate-800 group-hover:text-[#004a99] transition-colors">
