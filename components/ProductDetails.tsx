@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ProductDetails({
   mehsul,
@@ -11,10 +11,12 @@ export default function ProductDetails({
   allImages: any[];
   locale: string;
 }) {
-  // Seçilmiş aktiv şəkli idarə etmək üçün state
   const [selectedImage, setSelectedImage] = useState(allImages[0] || mehsul?.image_url);
+  const [expanded, setExpanded] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  // Şəkil yolunu düzgün formaya salan funksiya
+  useEffect(() => setMounted(true), []);
+
   const getImageUrl = (image: string) => {
     if (!image) return "https://via.placeholder.com/600x600?text=Baki+Karton";
     if (image.startsWith("http://") || image.startsWith("https://")) {
@@ -25,83 +27,147 @@ export default function ProductDetails({
     return `https://bakikarton.az${image.startsWith("/") ? image : `/${image}`}`;
   };
 
-  const validImages = allImages && allImages.length > 0 ? allImages.filter(Boolean) : [mehsul?.image_url].filter(Boolean);
+  const validImages =
+    allImages && allImages.length > 0 ? allImages.filter(Boolean) : [mehsul?.image_url].filter(Boolean);
+
+  const description: string = mehsul?.description || "";
+  const isLong = description.length > 220;
 
   return (
-    <main className="min-h-screen bg-slate-50/50 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        
+    <main className="min-h-screen bg-[#0A1F3D] text-slate-100 relative overflow-hidden pb-24">
+      {/* İncə diaqonal xətt toxuması — gofra kartonun rəflərinə işarə */}
+      <div
+        className="absolute inset-0 opacity-[0.06] pointer-events-none"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(135deg, #ffffff 0px, #ffffff 1px, transparent 1px, transparent 14px)",
+        }}
+      />
+      <div className="absolute -top-40 -left-40 w-[520px] h-[520px] bg-[#004a99]/20 rounded-full blur-[140px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-14 relative z-10">
+        {/* Geri düyməsi — kraft etiket kimi */}
         <Link
           href={`/${locale}/mehsullar`}
-          className="inline-flex items-center gap-2 px-4 py-2 cursor-pointer bg-white border border-slate-200 text-slate-600 rounded-full hover:bg-[#002B5B] hover:text-white hover:border-[#002B5B] transition-all duration-300 text-sm font-semibold mb-8 sm:mb-12 shadow-sm"
+          className={`group inline-flex items-center gap-2 px-4 py-2 bg-[#F7F2E4] text-[#0A1F3D] border border-dashed border-[#0A1F3D]/30 rounded-full text-sm font-semibold mb-8 sm:mb-12 shadow-sm transition-all duration-500 hover:border-[#004a99] hover:shadow-md ${
+            mounted ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+          }`}
         >
+          <span className="transition-transform duration-300 group-hover:-translate-x-1">←</span>
           Kataloqa qayıt
         </Link>
 
-        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-10 lg:gap-16">
-          
-          {/* SOL TƏRƏF: Böyük Şəkil və Qalereya */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-              <div className="aspect-[4/3] sm:aspect-square overflow-hidden rounded-2xl bg-slate-50 relative flex items-center justify-center">
+        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* SOL TƏRƏF: Şəkil */}
+          <div
+            className={`lg:col-span-6 space-y-4 lg:sticky lg:top-24 transition-all duration-700 ease-out ${
+              mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
+          >
+            <div className="relative">
+              {/* Kateqoriya etiketi — bir qutuya bərkidilmiş kraft nişan kimi */}
+              {mehsul?.category && (
+                <div className="absolute -top-3 -left-3 z-20 -rotate-3">
+                  <span className="relative inline-block bg-[#F7F2E4] text-[#0A1F3D] text-xs font-bold uppercase tracking-wide px-4 py-2 border border-dashed border-[#0A1F3D]/40 shadow-lg">
+                    {mehsul.category}
+                    <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[#0A1F3D]/20 border border-[#0A1F3D]/30" />
+                  </span>
+                </div>
+              )}
+
+              <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-[#071829] border border-white/10 shadow-2xl">
                 <img
                   src={getImageUrl(selectedImage || validImages[0])}
-                  className="w-full h-full object-cover transition-all duration-300"
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out hover:scale-[1.05]"
                   alt={mehsul?.name}
                 />
               </div>
             </div>
 
-            {/* Kiçik Şəkillərin Grid Siyahısı (Qalereya) */}
             {validImages.length > 1 && (
-              <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
-                {validImages.map((img: string, i: number) => (
-                  <div
-                    key={i}
-                    onClick={() => setSelectedImage(img)}
-                    className={`aspect-square rounded-xl overflow-hidden bg-slate-50 border-2 cursor-pointer transition-all ${
-                      selectedImage === img ? "border-[#002B5B] scale-95 shadow-md" : "border-slate-200 hover:border-slate-400"
-                    }`}
-                  >
-                    <img src={getImageUrl(img)} className="w-full h-full object-cover" alt="" />
-                  </div>
-                ))}
+              <div className="grid grid-cols-5 gap-2.5">
+                {validImages.map((img: string, i: number) => {
+                  const active = selectedImage === img;
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => setSelectedImage(img)}
+                      className={`relative aspect-square rounded-lg overflow-hidden transition-all duration-300 ${
+                        active
+                          ? "ring-2 ring-[#F7F2E4] ring-offset-2 ring-offset-[#0A1F3D] scale-95"
+                          : "opacity-50 hover:opacity-90"
+                      }`}
+                    >
+                      <img src={getImageUrl(img)} className="w-full h-full object-cover" alt="" />
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
 
-          {/* SAĞ TƏRƏF: Məlumatlar */}
-          <div className="lg:col-span-5">
-            <div className="lg:sticky lg:top-24 space-y-8">
-              <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                {mehsul?.category && (
-                  <span className="inline-block px-3 py-1 bg-blue-50 text-[#002B5B] text-xs font-bold rounded-full uppercase tracking-wider mb-4">
-                    {mehsul.category}
-                  </span>
-                )}
-                <h1 className="text-3xl sm:text-4xl font-black text-[#002B5B] mb-4 leading-tight">
-                  {mehsul?.name}
-                </h1>
-                <p className="text-slate-600 leading-relaxed text-base whitespace-pre-line">
-                  {mehsul?.description}
+          {/* SAĞ TƏRƏF: Məlumat + Sifariş */}
+          <div
+            className={`lg:col-span-6 space-y-6 w-full transition-all duration-700 ease-out delay-150 ${
+              mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
+          >
+            {/* Məlumat kartı — sol tərəfdə kraft rəngli "cild" xətti ilə */}
+            <div className="relative bg-white/[0.04] border border-white/10 rounded-2xl pl-7 pr-8 py-8 overflow-hidden">
+              <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#F7F2E4]" />
+
+              <h1 className="text-3xl sm:text-4xl font-black text-white mb-4 leading-tight">
+                {mehsul?.name}
+              </h1>
+
+              <div
+                className={`overflow-hidden transition-[max-height] duration-500 ease-in-out ${
+                  expanded ? "max-h-[999px]" : "max-h-28"
+                }`}
+              >
+                <p className="text-slate-400 leading-relaxed text-base whitespace-pre-line">
+                  {description}
                 </p>
               </div>
 
-              <div className="p-8 bg-gradient-to-br from-[#002B5B] to-[#004a99] rounded-3xl text-white shadow-xl">
-                <h3 className="text-xl font-bold mb-3">Sifariş vermək istəyirsiniz?</h3>
-                <p className="text-sm text-blue-100 mb-8 leading-relaxed">
-                  Bu məhsul və ya onun nümunələri ilə bağlı xüsusi sifariş tələbiniz varsa, bizimlə əlaqə saxlayın.
-                </p>
+              {isLong && (
+                <button
+                  onClick={() => setExpanded((v) => !v)}
+                  className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[#F7F2E4] hover:text-white transition-colors"
+                >
+                  {expanded ? "Qısalt" : "Ətraflı oxu"}
+                  <span
+                    className={`transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
+                  >
+                    ↓
+                  </span>
+                </button>
+              )}
+            </div>
+
+            {/* Sifariş bloku — bilet / ştamp forması */}
+            <div className="relative  bg-white text-[#0A1F3D] rounded-2xl px-8 pt-8 pb-7 shadow-2xl">
+              {/* Bilet kəsikləri */}
+              <span className="absolute top-1/2 -left-3 -translate-y-1/2 w-6 h-6 rounded-full bg-[#0A1F3D]" />
+              <span className="absolute top-1/2 -right-3 -translate-y-1/2 w-6 h-6 rounded-full bg-[#0A1F3D]" />
+
+              <h3 className="text-xl font-black mb-2">Sifariş vermək istəyirsiniz?</h3>
+              <p className="text-sm text-[#0A1F3D]/70 mb-6 leading-relaxed">
+                Bu məhsul və ya onun nümunələri ilə bağlı xüsusi sifariş tələbiniz varsa, komandamız
+                sizinlə tez əlaqə saxlayacaq.
+              </p>
+              {/* Qopara bilən xətt */}
+              <div className="border-t border-dashed border-[#0A1F3D]/25 pt-6">
                 <Link
                   href={`/${locale}/elaqe`}
-                  className="flex items-center justify-center gap-3 w-full py-4 bg-white text-[#002B5B] hover:bg-slate-50 text-center rounded-xl font-bold shadow-lg"
+                  className="group flex items-center justify-center gap-3 w-full py-4 bg-[#0A1F3D] text-white text-center rounded-xl font-bold shadow-lg transition-all duration-300 hover:rotate-[-1deg] hover:scale-[1.02] active:scale-95"
                 >
                   Sifariş et / Əlaqə
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                 </Link>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </main>
