@@ -108,12 +108,12 @@ export default function Footer({ locale, dict }: FooterProps) {
               </a>
             </div>
             <div className="flex gap-8 border-l border-slate-200 pl-8 hidden md:flex">
-              <Link href={`/${locale}/mexfilik`} className="text-slate-400 hover:text-[#004a99] text-[11px] font-bold uppercase tracking-widest transition-colors">
+              {/* <Link href={`/${locale}/mexfilik`} className="text-slate-400 hover:text-[#004a99] text-[11px] font-bold uppercase tracking-widest transition-colors">
                 {f.privacy || "Məxfilik"}
-              </Link>
-              <Link href={`/${locale}/sartlar`} className="text-slate-400 hover:text-[#004a99] text-[11px] font-bold uppercase tracking-widest transition-colors">
+              </Link> */}
+              {/* <Link href={`/${locale}/sartlar`} className="text-slate-400 hover:text-[#004a99] text-[11px] font-bold uppercase tracking-widest transition-colors">
                 {f.terms || "Şərtlər"}
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>
