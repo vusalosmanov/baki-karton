@@ -66,13 +66,13 @@ export default function Footer({ locale, dict }: FooterProps) {
               <div className="space-y-6">
                 <div className="group">
                   <p className="text-[10px] font-black text-[#004a99] uppercase mb-1">{f.phone || "Telefon"}</p>
-                  <a href="tel:+994103182222" className="text-lg font-bold text-slate-800 group-hover:text-[#004a99] transition-colors">
-                    (+994) 50 667 88 88
+                  <a href="tel:+99450677888" className="text-lg font-bold text-slate-800 group-hover:text-[#004a99] transition-colors">
+                    (+994) 50 677 88 88
                   </a>
                   </div>
                 <div className="group">
                   <p className="text-[10px] font-black text-[#004a99] uppercase mb-1">{f.email || "E-poçt"}</p>
-                  <a href="mailto:info@bakikarton.az" className="text-lg font-bold text-slate-800 group-hover:text-[#004a99] transition-colors">
+                  <a href="mailto:bakikartonsifarish@bakikarton.az" className="text-lg font-bold text-slate-800 group-hover:text-[#004a99] transition-colors">
                     bakikartonsifarish@bakikarton.az
                   </a>
                 </div>

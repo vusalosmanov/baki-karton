@@ -129,7 +129,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
                   </p>
 
                   <p className="font-medium text-base sm:text-lg">
-                    (+994) 50 667 88 88
+                    (+994) 50 677 88 88
                   </p>
                 </div>
               </div>
