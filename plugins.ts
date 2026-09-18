@@ -12,7 +12,7 @@ export default ({ env }: { env: any }) => ({
       },
       settings: {
         defaultFrom: 'no-reply@bakikarton.az',
-        defaultReplyTo: 'info@bakikarton.az',
+        defaultReplyTo: 'bakikartonsifarish@bakikarton.az',
       },
     },
   },

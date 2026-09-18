@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     }
 
     const data = await resend.emails.send({
-      from: "Bakı Karton <info@bakikarton.az>", 
+      from: "Bakı Karton <bakikartonsifarish@bakikarton.az>", 
       to: ["emin.a@bakikarton.az"],
       subject: `Yeni Karyera Müraciəti: ${name}`,
       html: `
