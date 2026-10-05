@@ -67,7 +67,7 @@ export default function Footer({ locale, dict }: FooterProps) {
                 <div className="group">
                   <p className="text-[10px] font-black text-[#004a99] uppercase mb-1">{f.phone || "Telefon"}</p>
                   <a href="tel:+99450677888" className="text-lg font-bold text-slate-800 group-hover:text-[#004a99] transition-colors">
-                    (+994) 50 677 88 88
+                   
                   </a>
                   </div>
                 <div className="group">
